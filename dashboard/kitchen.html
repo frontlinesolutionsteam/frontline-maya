@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Kitchen Display — Maya</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0a;
+      color: #f5f5f5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    .kds-header {
+      background: #111;
+      border-bottom: 2px solid #1e1e1e;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .kds-branding .kds-title { font-size: 18px; font-weight: 800; letter-spacing: 0.01em; }
+    .kds-branding .kds-sub   { font-size: 12px; color: #555; margin-top: 2px; }
+
+    .kds-counts { display: flex; gap: 10px; }
+    .count-pill {
+      display: flex; flex-direction: column; align-items: center;
+      background: #1a1a1a; border-radius: 8px; padding: 6px 14px;
+      border: 1px solid #2a2a2a; min-width: 60px;
+    }
+    .count-pill .num { font-size: 20px; font-weight: 800; line-height: 1; }
+    .count-pill .lbl { font-size: 9px; color: #666; margin-top: 3px; letter-spacing: 0.06em; }
+    .count-pill.new   .num { color: #ef4444; }
+    .count-pill.prep  .num { color: #f59e0b; }
+    .count-pill.ready .num { color: #22c55e; }
+
+    .kds-clock-block { text-align: right; }
+    .kds-time   { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .kds-update { font-size: 10px; color: #444; margin-top: 3px; }
+
+    /* ── Toast ──────────────────────────────────────────── */
+    #kds-toast {
+      position: fixed; top: 80px; right: 20px; z-index: 9999;
+      background: #ef4444; color: #fff;
+      padding: 12px 20px; border-radius: 10px;
+      font-size: 15px; font-weight: 700;
+      box-shadow: 0 6px 24px rgba(0,0,0,.6);
+      opacity: 0; transform: translateY(-8px);
+      transition: opacity .25s, transform .25s;
+      pointer-events: none;
+    }
+    #kds-toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── Empty state ────────────────────────────────────── */
+    #kds-empty {
+      display: none; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 14px; text-align: center;
+    }
+    #kds-empty.show { display: flex; }
+    #kds-empty .e-icon { font-size: 56px; }
+    #kds-empty .e-text { font-size: 20px; font-weight: 700; color: #444; }
+    #kds-empty .e-sub  { font-size: 13px; color: #333; }
+
+    /* ── Grid ───────────────────────────────────────────── */
+    #kds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+
+    /* ── Order card ─────────────────────────────────────── */
+    .order-card {
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .12s, opacity .35s;
+    }
+    .order-card.fade-out { opacity: 0; transform: scale(.95); }
+
+    .card-stripe { height: 5px; }
+    .card-stripe.confirmed { background: #ef4444; }
+    .card-stripe.in_prep   { background: #f59e0b; }
+    .card-stripe.ready     { background: #22c55e; }
+
+    .card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px 6px;
+    }
+    .ticket { font-size: 24px; font-weight: 900; letter-spacing: .02em; color: #fff; }
+
+    .head-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+    .source-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 4px; letter-spacing: .05em;
+    }
+    .src-website  { background: #172554; color: #60a5fa; }
+    .src-chatbot  { background: #052e16; color: #4ade80; }
+    .src-voice    { background: #2e1065; color: #c084fc; }
+    .src-instore  { background: #431407; color: #fb923c; }
+    .src-unknown  { background: #1c1917; color: #78716c; }
+
+    .time-ago {
+      font-size: 12px; color: #555; background: #1a1a1a;
+      padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+    }
+    .time-ago.urgent { color: #ef4444; }
+
+    .card-name {
+      padding: 2px 14px 10px;
+      font-size: 15px; font-weight: 600; color: #c4c4c4;
+    }
+
+    /* Items */
+    .card-items {
+      padding: 10px 14px;
+      border-top: 1px solid #1a1a1a;
+    }
+    .item-row {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 5px 0; border-bottom: 1px solid #141414;
+    }
+    .item-row:last-child { border-bottom: none; }
+    .item-qty  { font-size: 18px; font-weight: 900; color: #fff; min-width: 28px; text-align: right; }
+    .item-name { font-size: 15px; font-weight: 500; color: #e5e5e5; flex: 1; }
+    .item-mods { font-size: 11px; color: #555; padding-left: 36px; margin-top: -3px; padding-bottom: 3px; }
+
+    /* Notes */
+    .card-notes {
+      padding: 8px 14px;
+      font-size: 12px; color: #fbbf24;
+      background: #1c1500;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    /* Footer */
+    .card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; gap: 10px;
+      border-top: 1px solid #1a1a1a;
+    }
+    .pickup-lbl { font-size: 11px; color: #555; }
+    .pickup-val { font-size: 13px; font-weight: 600; color: #ccc; margin-top: 1px; }
+
+    .action-btn {
+      border: none; border-radius: 8px; cursor: pointer;
+      font-size: 14px; font-weight: 700; padding: 10px 16px;
+      transition: transform .1s, opacity .1s; white-space: nowrap;
+    }
+    .action-btn:active    { transform: scale(.93); opacity: .8; }
+    .action-btn:disabled  { opacity: .4; cursor: default; }
+    .btn-start { background: #f59e0b; color: #000; }
+    .btn-ready { background: #22c55e; color: #000; }
+    .btn-done  { background: #1f2937; color: #6b7280; font-size: 12px; }
+
+    /* ── Audio unlock overlay ───────────────────────────── */
+    #audio-unlock {
+      position: fixed; inset: 0; z-index: 99999;
+      background: rgba(0,0,0,.85);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; cursor: pointer;
+    }
+    #audio-unlock .au-icon { font-size: 64px; }
+    #audio-unlock .au-text { font-size: 22px; font-weight: 800; color: #fff; }
+    #audio-unlock .au-sub  { font-size: 14px; color: #888; }
+  </style>
+</head>
+<body>
+
+<!-- Tap-to-start overlay — required to unlock Web Audio API on iOS/Chrome -->
+<div id="audio-unlock">
+  <div class="au-icon">🔔</div>
+  <div class="au-text">Tap anywhere to start</div>
+  <div class="au-sub">Enables order alert sounds</div>
+</div>
+
+<div id="kds-toast"></div>
+
+<div class="kds-header">
+  <div class="kds-branding">
+    <div class="kds-title">Kitchen Display</div>
+    <div class="kds-sub" id="kds-sub">Connecting…</div>
+  </div>
+  <div class="kds-counts">
+    <div class="count-pill new">
+      <div class="num" id="cnt-new">0</div>
+      <div class="lbl">NEW</div>
+    </div>
+    <div class="count-pill prep">
+      <div class="num" id="cnt-prep">0</div>
+      <div class="lbl">IN PREP</div>
+    </div>
+    <div class="count-pill ready">
+      <div class="num" id="cnt-ready">0</div>
+      <div class="lbl">READY</div>
+    </div>
+  </div>
+  <div class="kds-clock-block">
+    <div class="kds-time" id="kds-time">--:--</div>
+    <div class="kds-update" id="kds-update">Loading…</div>
+  </div>
+</div>
+
+<div id="kds-empty">
+  <div class="e-icon">✅</div>
+  <div class="e-text">All caught up!</div>
+  <div class="e-sub">No active orders. New orders will appear here automatically.</div>
+</div>
+
+<div id="kds-grid"></div>
+
+<script>
+  const KEY = new URLSearchParams(location.search).get('key') || '';
+  const API = location.origin;
+
+  let knownIds = new Set();
+  let firstLoad = true;
+  let audioCtx = null;
+
+  /* ── Audio unlock overlay ─────────────────────────────── */
+  (function () {
+    const overlay = document.getElementById('audio-unlock');
+    function unlock() {
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Resume immediately (required by some browsers after creation)
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      } catch(e) {}
+      overlay.style.display = 'none';
+      document.removeEventListener('click',      unlock);
+      document.removeEventListener('touchstart', unlock);
+    }
+    document.addEventListener('click',      unlock, { once: true });
+    document.addEventListener('touchstart', unlock, { once: true });
+  })();
+
+  /* ── Audio beep (no file needed) ─────────────────────── */
+  function beep() {
+    if (!audioCtx) return;
+    try {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      [880, 1100].forEach((freq, i) => {
+        const osc  = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        const t = audioCtx.currentTime + i * 0.18;
+        gain.gain.setValueAtTime(0.35, t);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        osc.start(t); osc.stop(t + 0.35);
+      });
+    } catch(e) {}
+  }
+
+  function toast(msg) {
+    const el = document.getElementById('kds-toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  /* ── Time helpers ─────────────────────────────────────── */
+  function timeAgo(ts) {
+    const s = Math.floor((Date.now() - new Date(ts.endsWith('Z') ? ts : ts + 'Z')) / 1000);
+    if (s < 60)   return `${s}s ago`;
+    if (s < 3600) return `${Math.floor(s/60)}m ago`;
+    return `${Math.floor(s/3600)}h ago`;
+  }
+
+  function isUrgent(ts, status) {
+    const m = (Date.now() - new Date(ts.endsWith('Z') ? ts : ts + 'Z')) / 60000;
+    return (status === 'confirmed' && m > 5) || (status === 'in_prep' && m > 15);
+  }
+
+  function ticketNum(id) {
+    return '#' + id.replace(/-/g,'').toUpperCase().slice(0,6);
+  }
+
+  /* ── Source label / class ─────────────────────────────── */
+  function srcLabel(s) {
+    return { website:'ONLINE', chatbot:'CHAT', voice:'VOICE',
+             'in-store':'IN-STORE', instore:'IN-STORE' }[s] || (s||'').toUpperCase() || 'UNKNOWN';
+  }
+  function srcClass(s) {
+    if (s==='website') return 'src-website';
+    if (s==='chatbot') return 'src-chatbot';
+    if (s==='voice')   return 'src-voice';
+    if (s==='in-store'||s==='instore') return 'src-instore';
+    return 'src-unknown';
+  }
+
+  /* ── Render one card ──────────────────────────────────── */
+  function renderCard(o) {
+    let items = [];
+    try { items = JSON.parse(o.items_json || '[]'); } catch(e) {}
+
+    const itemsHtml = items.map(it => {
+      const mods = Array.isArray(it.modifiers) ? it.modifiers.filter(Boolean).join(', ') : '';
+      return `<div class="item-row">
+        <div class="item-qty">${it.quantity || 1}×</div>
+        <div class="item-name">${it.name || it.item_name || '—'}</div>
+      </div>${mods ? `<div class="item-mods">${mods}</div>` : ''}`;
+    }).join('') || '<div style="color:#333;font-size:13px;padding:4px 0;">No item details</div>';
+
+    const notes = o.special_instructions
+      ? `<div class="card-notes">📝 ${o.special_instructions}</div>` : '';
+
+    const urgent = isUrgent(o.timestamp, o.status);
+
+    let btnHtml = '';
+    if (o.status === 'confirmed')
+      btnHtml = `<button class="action-btn btn-start" onclick="setStatus('${o.order_id}','in_prep',this)">Start Prep</button>`;
+    else if (o.status === 'in_prep')
+      btnHtml = `<button class="action-btn btn-ready" onclick="setStatus('${o.order_id}','ready',this)">Mark Ready</button>`;
+    else if (o.status === 'ready')
+      btnHtml = `<button class="action-btn btn-done"  onclick="setStatus('${o.order_id}','picked_up',this)">Picked Up ✓</button>`;
+
+    return `<div class="order-card" id="card-${o.order_id}"
+               data-id="${o.order_id}" data-ts="${o.timestamp}" data-status="${o.status}">
+      <div class="card-stripe ${o.status}"></div>
+      <div class="card-head">
+        <div class="ticket">${ticketNum(o.order_id)}</div>
+        <div class="head-right">
+          <span class="source-badge ${srcClass(o.source)}">${srcLabel(o.source)}</span>
+          <span class="time-ago${urgent?' urgent':''}" id="ago-${o.order_id}">${timeAgo(o.timestamp)}</span>
+        </div>
+      </div>
+      <div class="card-name">${o.customer_name || 'Walk-in'}</div>
+      <div class="card-items">${itemsHtml}</div>
+      ${notes}
+      <div class="card-foot">
+        <div>
+          <div class="pickup-lbl">Pickup</div>
+          <div class="pickup-val">${o.pickup_time || 'ASAP'}</div>
+        </div>
+        ${btnHtml}
+      </div>
+    </div>`;
+  }
+
+  /* ── Status update ────────────────────────────────────── */
+  async function setStatus(id, status, btn) {
+    if (btn) { btn.disabled = true; btn.textContent = '…'; }
+    try {
+      await fetch(`${API}/api/orders/${id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (status === 'picked_up' || status === 'cancelled') {
+        const card = document.getElementById('card-' + id);
+        if (card) {
+          card.classList.add('fade-out');
+          setTimeout(() => { card.remove(); syncEmpty(); }, 380);
+        }
+      } else {
+        await poll();
+      }
+    } catch(e) {
+      if (btn) { btn.disabled = false; }
+    }
+  }
+
+  /* ── Poll ─────────────────────────────────────────────── */
+  async function poll() {
+    try {
+      const res = await fetch(`${API}/api/orders?limit=100`);
+      if (!res.ok) throw new Error(res.status);
+      const { orders } = await res.json();
+
+      const active = (orders || [])
+        .filter(o => {
+          if (!['confirmed','in_prep','ready'].includes(o.status)) return false;
+          // Auto-dismiss READY orders after 45 min — customer picked up or it staled out
+          if (o.status === 'ready') {
+            const ts = o.updated_at || o.timestamp;
+            const ageMin = (Date.now() - new Date(ts.endsWith('Z') ? ts : ts + 'Z')) / 60000;
+            if (ageMin > 45) return false;
+          }
+          return true;
+        })
+        .sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+      const activeIds = new Set(active.map(o => o.order_id));
+
+      // Detect genuinely new orders
+      const newOrders = active.filter(o => !knownIds.has(o.order_id));
+      if (!firstLoad && newOrders.length) {
+        beep();
+        toast(`🔔 ${newOrders.length} new order${newOrders.length>1?'s':''}!`);
+      }
+
+      const grid = document.getElementById('kds-grid');
+
+      // Remove stale cards
+      grid.querySelectorAll('.order-card').forEach(card => {
+        if (!activeIds.has(card.dataset.id)) {
+          card.classList.add('fade-out');
+          setTimeout(() => { card.remove(); syncEmpty(); }, 380);
+        }
+      });
+
+      // Add / update cards
+      for (const o of active) {
+        const existing = document.getElementById('card-' + o.order_id);
+        if (!existing) {
+          grid.insertAdjacentHTML('beforeend', renderCard(o));
+        } else if (existing.dataset.status !== o.status) {
+          existing.outerHTML = renderCard(o);
+        }
+      }
+
+      knownIds = activeIds;
+      firstLoad = false;
+
+      // Update counts
+      document.getElementById('cnt-new').textContent   = active.filter(o=>o.status==='confirmed').length;
+      document.getElementById('cnt-prep').textContent  = active.filter(o=>o.status==='in_prep').length;
+      document.getElementById('cnt-ready').textContent = active.filter(o=>o.status==='ready').length;
+      document.getElementById('kds-sub').textContent =
+        `${active.length} active order${active.length!==1?'s':''} · Taqueria El Coral`;
+      document.getElementById('kds-update').textContent =
+        'Updated ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+      // Live tab title so staff can monitor from background tabs
+      document.title = active.length > 0
+        ? `Kitchen (${active.length}) — Maya`
+        : 'Kitchen Display — Maya';
+
+      syncEmpty();
+    } catch(e) {
+      document.getElementById('kds-update').textContent = 'Connection error — retrying…';
+    }
+  }
+
+  /* ── Empty state ──────────────────────────────────────── */
+  function syncEmpty() {
+    const hasCards = document.querySelectorAll('#kds-grid .order-card').length > 0;
+    document.getElementById('kds-empty').classList.toggle('show', !hasCards);
+  }
+
+  /* ── Refresh time-ago labels (no full re-render) ──────── */
+  function refreshAgo() {
+    document.querySelectorAll('[id^="ago-"]').forEach(el => {
+      const id   = el.id.replace('ago-','');
+      const card = document.getElementById('card-' + id);
+      if (!card) return;
+      const ts     = card.dataset.ts;
+      const status = card.dataset.status;
+      if (!ts) return;
+      el.textContent = timeAgo(ts);
+      el.classList.toggle('urgent', isUrgent(ts, status));
+    });
+  }
+
+  /* ── Clock ────────────────────────────────────────────── */
+  function tick() {
+    document.getElementById('kds-time').textContent =
+      new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+  }
+
+  /* ── Screen wake lock ─────────────────────────────────── */
+  if ('wakeLock' in navigator) {
+    navigator.wakeLock.request('screen').catch(()=>{});
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible')
+        navigator.wakeLock.request('screen').catch(()=>{});
+    });
+  }
+
+  /* ── Boot ─────────────────────────────────────────────── */
+  tick();
+  poll();
+  setInterval(poll,    10000);
+  setInterval(tick,    1000);
+  setInterval(refreshAgo, 30000);
+</script>
+</body>
+</html>

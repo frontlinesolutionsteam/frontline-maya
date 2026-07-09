@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Menu Manager — Maya Admin</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+  }
+  header {
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-title h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; }
+  .header-title p { font-size: 12px; color: #64748b; margin-top: 1px; }
+  .nav-link {
+    color: #94a3b8; text-decoration: none; font-size: 13px;
+    padding: 6px 12px; border-radius: 6px; transition: background .15s;
+  }
+  .nav-link:hover { background: #334155; color: #f1f5f9; }
+
+  main { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 12px; padding: 22px 24px;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 700; color: #f1f5f9;
+    margin-bottom: 4px;
+  }
+  .card-sub { font-size: 12px; color: #64748b; margin-bottom: 18px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 16px; border-radius: 8px; font-size: 13px;
+    font-weight: 600; cursor: pointer; border: none;
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary { background: #3b82f6; color: #fff; }
+  .btn-secondary { background: #334155; color: #e2e8f0; }
+  .btn-full { width: 100%; justify-content: center; }
+
+  .drop-zone {
+    border: 2px dashed #334155; border-radius: 10px;
+    padding: 28px 20px; text-align: center;
+    cursor: pointer; transition: border-color .2s, background .2s;
+    margin-bottom: 14px;
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: #3b82f6; background: rgba(59,130,246,.05);
+  }
+  .drop-zone input[type=file] { display: none; }
+  .drop-icon { font-size: 28px; margin-bottom: 8px; color: #475569; }
+  .drop-label { font-size: 13px; color: #94a3b8; }
+  .drop-file { font-size: 13px; font-weight: 600; color: #60a5fa; margin-top: 6px; }
+
+  .feedback {
+    border-radius: 8px; padding: 12px 14px;
+    font-size: 13px; margin-top: 14px; display: none;
+  }
+  .feedback.success { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: #34d399; }
+  .feedback.error   { background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.3); color: #f87171; }
+  .feedback.warning { background: rgba(251,191,36,.1);  border: 1px solid rgba(251,191,36,.3);  color: #fbbf24; }
+
+  .section-title {
+    font-size: 11px; font-weight: 700; color: #64748b;
+    text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px;
+  }
+
+  .restaurant-list { display: flex; flex-direction: column; gap: 10px; }
+  .restaurant-card {
+    background: #0f172a; border: 1px solid #334155;
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .restaurant-info { flex: 1; min-width: 0; }
+  .restaurant-name { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+  .restaurant-meta { font-size: 12px; color: #64748b; margin-top: 3px; }
+  .badge {
+    font-size: 11px; font-weight: 600; padding: 3px 9px;
+    border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+  }
+  .badge-green { background: rgba(52,211,153,.15); color: #34d399; }
+
+  .empty { text-align: center; color: #475569; font-size: 13px; padding: 24px 0; }
+
+  .template-box {
+    background: #0f172a; border: 1px solid #334155; border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 14px;
+  }
+  .template-box p { font-size: 12px; color: #94a3b8; margin-bottom: 10px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-title">
+      <h1>Menu Manager</h1>
+      <p>Add and manage restaurants on the Maya platform</p>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <a class="nav-link" href="javascript:location.href='/?key='+encodeURIComponent(sessionStorage.getItem('akey')||'')">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+
+  <div class="grid">
+
+    <!-- Upload card -->
+    <div class="card">
+      <div class="card-title">Upload restaurant menu</div>
+      <div class="card-sub">Upload a completed JSON file to add or update a restaurant</div>
+
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept=".json,application/json">
+        <div class="drop-icon">&#8679;</div>
+        <div class="drop-label">Click to choose a file or drag it here</div>
+        <div class="drop-file" id="file-name"></div>
+      </div>
+
+      <button class="btn btn-primary btn-full" id="upload-btn" disabled>Upload menu</button>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <!-- Template card -->
+    <div class="card">
+      <div class="card-title">Download template</div>
+      <div class="card-sub">Start here — fill in your restaurant's details</div>
+
+      <div class="template-box">
+        <p>The template has every required field pre-filled with examples. Edit it in any text editor, then upload it using the form on the left.</p>
+        <p><strong style="color:#f1f5f9;">Required fields:</strong> restaurant_id, restaurant_name, manager_phone, menu items with name + price.</p>
+        <p><strong style="color:#f1f5f9;">Hours format:</strong> "HH:MM" in 24-hour time. Set a day to null if closed.</p>
+      </div>
+
+      <button class="btn btn-secondary btn-full" id="download-btn">Download template JSON</button>
+    </div>
+
+  </div>
+
+  <!-- Active restaurants -->
+  <div class="section-title">Active restaurants</div>
+  <div class="restaurant-list" id="restaurant-list">
+    <div class="empty">Loading…</div>
+  </div>
+
+</main>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const key = params.get('key') || '';
+  if (key) sessionStorage.setItem('akey', key);
+
+  const TEMPLATE = {
+    "restaurant_id": "my_restaurant_001",
+    "restaurant_name": "My Restaurant",
+    "manager_phone": "+10000000000",
+    "manager_email": "manager@myrestaurant.com",
+    "twilio_phone": "+10000000000",
+    "timezone": "America/Los_Angeles",
+    "prep_time_estimate_minutes": 10,
+    "catering_threshold": { "min_dollars": 150 },
+    "hours": {
+      "monday":    { "open": "10:00", "close": "21:00" },
+      "tuesday":   { "open": "10:00", "close": "21:00" },
+      "wednesday": { "open": "10:00", "close": "21:00" },
+      "thursday":  { "open": "10:00", "close": "21:00" },
+      "friday":    { "open": "09:00", "close": "22:00" },
+      "saturday":  { "open": "09:00", "close": "22:00" },
+      "sunday":    null
+    },
+    "menu": [
+      {
+        "id": "taco_carne_asada",
+        "category": "Tacos",
+        "name": "Taco de Carne Asada",
+        "description": "Grilled steak taco with cilantro and onion",
+        "price": 4.50,
+        "available": true,
+        "modifiers": [
+          { "name": "Add guacamole", "price_delta": 1.00 },
+          { "name": "Extra salsa",   "price_delta": 0.00 }
+        ],
+        "combos": []
+      },
+      {
+        "id": "burrito_pollo",
+        "category": "Burritos",
+        "name": "Burrito de Pollo",
+        "description": "Chicken burrito with rice, beans, and cheese",
+        "price": 10.99,
+        "available": true,
+        "modifiers": [
+          { "name": "Add sour cream", "price_delta": 0.50 }
+        ],
+        "combos": [
+          { "name": "Burrito combo", "items": ["burrito_pollo", "drink_horchata"], "price": 13.99 }
+        ]
+      },
+      {
+        "id": "drink_horchata",
+        "category": "Drinks",
+        "name": "Horchata",
+        "description": "Fresh homemade horchata",
+        "price": 3.00,
+        "available": true,
+        "modifiers": [],
+        "combos": []
+      }
+    ]
+  };
+
+  document.getElementById('download-btn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(TEMPLATE, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'maya_menu_template.json';
+    a.click();
+  });
+
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const fileName  = document.getElementById('file-name');
+  const uploadBtn = document.getElementById('upload-btn');
+  const feedback  = document.getElementById('feedback');
+  let selectedFile = null;
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f) setFile(f);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) setFile(fileInput.files[0]);
+  });
+
+  function setFile(f) {
+    selectedFile = f;
+    fileName.textContent = f.name;
+    uploadBtn.disabled = false;
+    hideFeedback();
+  }
+
+  function showFeedback(type, html) {
+    feedback.className = `feedback ${type}`;
+    feedback.innerHTML = html;
+    feedback.style.display = 'block';
+  }
+  function hideFeedback() { feedback.style.display = 'none'; }
+
+  uploadBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'Uploading…';
+    hideFeedback();
+
+    const form = new FormData();
+    form.append('file', selectedFile);
+
+    try {
+      const url = `/menu/upload${key ? '?key=' + encodeURIComponent(key) : ''}`;
+      const res = await fetch(url, { method: 'POST', body: form });
+      const data = await res.json();
+
+      if (res.ok) {
+        let msg = `<strong>${data.restaurant_name}</strong> uploaded — ${data.menu_items} menu items loaded.`;
+        if (data.warnings && data.warnings.length) {
+          msg += `<br><br><strong>Warnings:</strong><br>` + data.warnings.map(w => `• ${w}`).join('<br>');
+          showFeedback('warning', msg);
+        } else {
+          showFeedback('success', msg);
+        }
+        loadRestaurants();
+      } else {
+        showFeedback('error', `<strong>Error:</strong> ${data.detail || 'Upload failed'}`);
+      }
+    } catch (e) {
+      showFeedback('error', 'Network error — please try again.');
+    }
+
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = 'Upload menu';
+  });
+
+  async function loadRestaurants() {
+    const list = document.getElementById('restaurant-list');
+    try {
+      const url = `/menus${key ? '?key=' + encodeURIComponent(key) : ''}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const menus = data.menus || [];
+      if (menus.length === 0) {
+        list.innerHTML = '<div class="empty">No restaurants loaded yet.</div>';
+        return;
+      }
+      list.innerHTML = menus.map(m => `
+        <div class="restaurant-card">
+          <div class="restaurant-info">
+            <div class="restaurant-name">${m.restaurant_name || m.restaurant_id}</div>
+            <div class="restaurant-meta">
+              ID: ${m.restaurant_id}
+              ${m.twilio_phone ? ' · Twilio: ' + m.twilio_phone : ''}
+              ${m.menu_item_count ? ' · ' + m.menu_item_count + ' items' : ''}
+            </div>
+          </div>
+          <span class="badge badge-green">Active</span>
+        </div>
+      `).join('');
+    } catch (e) {
+      list.innerHTML = '<div class="empty">Could not load restaurants.</div>';
+    }
+  }
+
+  loadRestaurants();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Maya — Kitchen Display</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:       #0f0f1a;
+    --surface:  #1a1a2e;
+    --surface2: #16213e;
+    --accent:   #e94560;
+    --green:    #00d084;
+    --yellow:   #f0a500;
+    --blue:     #4facfe;
+    --purple:   #a78bfa;
+    --orange:   #fb923c;
+    --red:      #e94560;
+    --text:     #e8e8f0;
+    --muted:    #888aa0;
+    --border:   #2a2a45;
+  }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── Header / Top Nav ── */
+  header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 24px; display: flex; align-items: center; justify-content: space-between;
+    height: 64px; position: sticky; top: 0; z-index: 200; gap: 20px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: 800; letter-spacing: -.5px; flex-shrink: 0; }
+  .logo-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+  .top-nav { display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: 10px; }
+  .nav-btn { padding: 10px 24px; border-radius: 7px; border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: 1rem; font-weight: 700; transition: all .15s; }
+  .nav-btn.active { background: var(--accent); color: #fff; }
+  .header-right { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+  .status-badge { font-size:.85rem; padding:5px 14px; border-radius:20px; font-weight:700; letter-spacing:.5px; white-space: nowrap; }
+  .status-badge.connected    { background:rgba(0,208,132,.15); color:var(--green); border:1px solid rgba(0,208,132,.3); }
+  .status-badge.disconnected { background:rgba(233,69,96,.15);  color:var(--red);   border:1px solid rgba(233,69,96,.3); }
+  .count-badge { font-size:1rem; color:var(--muted); font-weight:700; }
+  .count-badge strong { color: var(--text); }
+
+  .view { display: none; }
+  .view.active { display: block; }
+  main { max-width:1700px; margin:0 auto; padding:20px 24px 48px; }
+
+  .kds-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(430px,1fr)); gap:20px; }
+
+  /* ── Cards ── */
+  .kds-card { background:var(--surface); border:2px solid var(--border); border-radius:14px; overflow:hidden; animation:slideIn .25s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .kds-card.urgency-near    { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(240,165,0,.25); }
+  .kds-card.urgency-overdue { border-color: var(--red);    box-shadow: 0 0 0 3px rgba(233,69,96,.35); }
+
+  .kds-head { padding:16px 20px 12px; border-bottom:2px solid var(--border); }
+  .kds-head-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+  .badge-row { display:flex; gap:8px; flex-wrap:wrap; }
+  .badge { font-size:.8rem; font-weight:800; letter-spacing:.5px; padding:5px 12px; border-radius:20px; text-transform:uppercase; white-space:nowrap; }
+  .badge-paid     { background:rgba(0,208,132,.18); color:var(--green);  border:1px solid rgba(0,208,132,.4); }
+  .badge-unpaid   { background:rgba(240,165,0,.18); color:var(--yellow); border:1px solid rgba(240,165,0,.4); }
+  .source-website { background:rgba(79,172,254,.18);  color:var(--blue);   border:1px solid rgba(79,172,254,.4); }
+  .source-chatbot { background:rgba(167,139,250,.18); color:var(--purple); border:1px solid rgba(167,139,250,.4); }
+  .source-voice   { background:rgba(233,69,96,.15);   color:var(--accent); border:1px solid rgba(233,69,96,.35); }
+  .source-phone   { background:rgba(251,146,60,.18);  color:var(--orange); border:1px solid rgba(251,146,60,.4); }
+  .source-in_person { background:rgba(0,208,132,.18); color:var(--green);  border:1px solid rgba(0,208,132,.4); }
+
+  .due-badge { font-size:.95rem; font-weight:800; padding:6px 14px; border-radius:20px; white-space:nowrap; }
+  .due-ok      { background:rgba(136,138,160,.15); color:var(--text); }
+  .due-near    { background:rgba(240,165,0,.2); color:var(--yellow); }
+  .due-overdue { background:rgba(233,69,96,.25); color:#ff8a9a; }
+
+  .kds-customer { font-size:1.35rem; font-weight:800; }
+  .kds-meta { display:flex; gap:18px; font-size:1rem; color:var(--muted); margin-top:4px; flex-wrap:wrap; }
+  .kds-meta strong { color: var(--text); }
+
+  .kds-body { padding:16px 20px; }
+  .kds-item { padding:10px 0; border-bottom:1px solid var(--border); }
+  .kds-item:last-child { border-bottom:none; }
+  .kds-item-name { font-size:1.15rem; font-weight:800; }
+  .kds-item-mods { font-size:1rem; color:var(--yellow); font-weight:600; margin-top:3px; }
+  .kds-notes { margin-top:10px; padding:10px 12px; background:rgba(240,165,0,.1); border:1px solid rgba(240,165,0,.3); border-radius:8px; font-size:1rem; color:var(--yellow); font-weight:600; }
+  .kds-empty-items { color:var(--muted); font-size:1rem; font-style:italic; }
+
+  .kds-foot { padding:16px 20px 20px; }
+  .complete-btn { width:100%; padding:16px; border-radius:10px; border:none; background:var(--green); color:#06281c; font-weight:800; font-size:1.15rem; cursor:pointer; letter-spacing:.3px; }
+  .complete-btn:hover { opacity:.9; }
+  .undo-btn { width:100%; margin-top:8px; padding:9px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--muted); font-weight:600; font-size:.85rem; cursor:pointer; }
+  .undo-btn:hover { color:var(--text); border-color:var(--text); }
+
+  .empty-state { text-align:center; padding:80px 20px; color:var(--muted); grid-column:1/-1; }
+  .empty-state .icon { font-size:3.2rem; margin-bottom:14px; }
+  .empty-state h3 { font-size:1.4rem; color:var(--text); }
+
+  @media(max-width:700px) { main{padding:12px} .kds-grid{grid-template-columns:1fr} header{flex-wrap:wrap;height:auto;padding:10px} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-dot"></div>Maya — Kitchen</div>
+  <nav class="top-nav">
+    <button class="nav-btn active" data-view="progress" onclick="switchView('progress')">In Progress</button>
+    <button class="nav-btn" data-view="completed" onclick="switchView('completed')">Completed</button>
+  </nav>
+  <div class="header-right">
+    <span class="count-badge" id="progress-count">0 in progress</span>
+    <span class="status-badge disconnected" id="conn-badge">● Connecting...</span>
+  </div>
+</header>
+
+<section id="view-progress" class="view active">
+  <main>
+    <div id="progress-grid" class="kds-grid"></div>
+  </main>
+</section>
+
+<section id="view-completed" class="view">
+  <main>
+    <div id="completed-grid" class="kds-grid"></div>
+  </main>
+</section>
+
+<script>
+  // ══════════════ State ══════════════
+  let allOrders = [];
+  let ws = null;
+  const DASH_KEY = new URLSearchParams(window.location.search).get('key') || '';
+  const NEAR_DUE_MINUTES = 5;
+
+  // ══════════════ Nav ══════════════
+  function switchView(view) {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    document.getElementById('view-progress').classList.toggle('active', view === 'progress');
+    document.getElementById('view-completed').classList.toggle('active', view === 'completed');
+  }
+
+  // ══════════════ WebSocket — same /ws/dashboard feed the employee dashboard uses ══════════════
+  function connect() {
+    const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+    ws = new WebSocket(`${proto}://${location.host}/ws/dashboard${DASH_KEY ? '?key=' + encodeURIComponent(DASH_KEY) : ''}`);
+    ws.onopen = () => {
+      document.getElementById('conn-badge').textContent = '● Live';
+      document.getElementById('conn-badge').className = 'status-badge connected';
+    };
+    ws.onclose = () => {
+      document.getElementById('conn-badge').textContent = '● Reconnecting...';
+      document.getElementById('conn-badge').className = 'status-badge disconnected';
+      setTimeout(connect, 3000);
+    };
+    ws.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+      if (msg.event === 'init') {
+        allOrders = msg.orders || [];
+        renderAll();
+      } else if (msg.event === 'new_order') {
+        allOrders.unshift(msg.order);
+        renderAll();
+      } else if (msg.event === 'status_update') {
+        const o = allOrders.find(x => x.order_id === msg.order_id);
+        if (o) { o.status = msg.status; o.updated_at = new Date().toISOString(); renderAll(); }
+      } else if (msg.event === 'payment_update') {
+        const o = allOrders.find(x => x.order_id === msg.order_id);
+        if (o) { o.payment_status = msg.payment_status; o.payment_method = msg.payment_method; renderAll(); }
+      }
+    };
+  }
+
+  function renderAll() { renderProgress(); renderCompleted(); }
+
+  // ══════════════ Helpers ══════════════
+  function parseItems(o) {
+    try { return Array.isArray(o.items) ? o.items : JSON.parse(o.items_json || '[]'); } catch(e) { return []; }
+  }
+  function isPaid(o) { return (o.payment_status || 'unpaid').startsWith('paid'); }
+  function sourceLabel(s) { return {website:'Website', chatbot:'Chatbot', voice:'Voice', phone:'Phone', in_person:'In-Person'}[s] || (s||'Unknown'); }
+  function custName(o) { return (o.customer && o.customer.name) || o.customer_name || '—'; }
+  function custPickup(o) { return (o.customer && o.customer.pickup_time) || o.pickup_time || 'ASAP'; }
+
+  // Unified due-time: lets ASAP orders (due = placed + prep time) and orders with a
+  // specific pickup time sort on the same axis, so "treat ASAP as urgent" falls out
+  // naturally — an ASAP order due in 4 minutes outranks a pickup scheduled in 2 hours.
+  function computeDueTime(o) {
+    const orderTime = o.timestamp ? new Date(o.timestamp) : new Date();
+    const prepMs = (o.estimated_prep_minutes || 10) * 60000;
+    const pickup = (custPickup(o) || '').trim();
+
+    if (!pickup || /^asap$/i.test(pickup)) {
+      return new Date(orderTime.getTime() + prepMs);
+    }
+    // ISO8601 (e.g. "2026-07-09T18:00:00")
+    if (/\d{4}-\d{2}-\d{2}/.test(pickup)) {
+      const iso = new Date(pickup);
+      if (!isNaN(iso)) return iso;
+    }
+    // "6:00 PM" / "18:00" style — apply to the order's own date
+    const m = pickup.match(/(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)?/);
+    if (m) {
+      let hours = parseInt(m[1], 10);
+      const minutes = parseInt(m[2], 10);
+      const ampm = m[3] ? m[3].toUpperCase() : null;
+      if (ampm === 'PM' && hours !== 12) hours += 12;
+      if (ampm === 'AM' && hours === 12) hours = 0;
+      const due = new Date(orderTime);
+      due.setHours(hours, minutes, 0, 0);
+      if (due.getTime() < orderTime.getTime() - 6 * 3600000) due.setDate(due.getDate() + 1);
+      return due;
+    }
+    // Unparseable free text (e.g. "Delivery to 123 Main St") — fall back to ASAP-style
+    return new Date(orderTime.getTime() + prepMs);
+  }
+
+  function urgencyInfo(dueTime) {
+    const diffMin = Math.round((dueTime - new Date()) / 60000);
+    if (diffMin < 0) return { level: 'overdue', label: `OVERDUE ${Math.abs(diffMin)}m` };
+    if (diffMin <= NEAR_DUE_MINUTES) return { level: 'near', label: diffMin === 0 ? 'Due now' : `Due in ${diffMin}m` };
+    if (diffMin < 90) return { level: 'ok', label: `Due in ${diffMin}m` };
+    return { level: 'ok', label: `Pickup ${dueTime.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}` };
+  }
+
+  function buildCard(o, opts) {
+    const items = parseItems(o);
+    const paid = isPaid(o);
+    const pickup = custPickup(o);
+    const due = opts.dueTime;
+    const urgency = opts.showDue ? urgencyInfo(due) : null;
+
+    const itemsHtml = items.length ? items.map(i => `
+      <div class="kds-item">
+        <div class="kds-item-name">${i.quantity||1}× ${i.name||''}</div>
+        ${i.modifiers && i.modifiers.length ? `<div class="kds-item-mods">${i.modifiers.join(' · ')}</div>` : ''}
+      </div>`).join('') : `<div class="kds-empty-items">No items — full order via callback</div>`;
+
+    const dueBadgeHtml = opts.showDue
+      ? `<span class="due-badge due-${urgency.level}">${urgency.label}</span>`
+      : `<span class="due-badge due-ok">✅ ${o.updated_at ? new Date(o.updated_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : ''}</span>`;
+
+    const actionHtml = opts.showDue
+      ? `<button class="complete-btn" onclick="markCompleted('${o.order_id}')">✅ Completed</button>`
+      : `<button class="undo-btn" onclick="undoCompleted('${o.order_id}')">↩ Move back to In Progress</button>`;
+
+    return `
+      <div class="kds-card ${urgency ? 'urgency-' + urgency.level : ''}" data-id="${o.order_id}">
+        <div class="kds-head">
+          <div class="kds-head-top">
+            <div class="badge-row">
+              <span class="badge source-${o.source||'voice'}">${sourceLabel(o.source)}</span>
+              <span class="badge ${paid ? 'badge-paid' : 'badge-unpaid'}">${paid ? '✅ Paid' : 'Unpaid'}</span>
+            </div>
+            ${dueBadgeHtml}
+          </div>
+          <div class="kds-customer">${custName(o)}</div>
+          <div class="kds-meta">
+            <span>Pickup: <strong>${pickup}</strong></span>
+            <span>Prep: <strong>${o.estimated_prep_minutes || 10} min</strong></span>
+          </div>
+        </div>
+        <div class="kds-body">
+          ${itemsHtml}
+          ${o.special_instructions ? `<div class="kds-notes">📝 ${o.special_instructions}</div>` : ''}
+        </div>
+        <div class="kds-foot">${actionHtml}</div>
+      </div>`;
+  }
+
+  // ══════════════ In Progress — paid AND unpaid, sorted by unified due time ══════════════
+  function renderProgress() {
+    const list = allOrders.filter(o =>
+      (o.status || 'confirmed') !== 'picked_up' &&
+      (o.status || '') !== 'cancelled' &&
+      parseItems(o).length > 0
+    );
+    const withDue = list.map(o => ({ o, due: computeDueTime(o) }));
+    withDue.sort((a, b) => a.due - b.due);
+
+    document.getElementById('progress-count').innerHTML = `<strong>${list.length}</strong> in progress`;
+    const grid = document.getElementById('progress-grid');
+    grid.innerHTML = withDue.length
+      ? withDue.map(({ o, due }) => buildCard(o, { showDue: true, dueTime: due })).join('')
+      : `<div class="empty-state"><div class="icon">🍳</div><h3>All caught up — no orders in progress</h3></div>`;
+  }
+
+  // ══════════════ Completed — most recently completed first ══════════════
+  function renderCompleted() {
+    const list = allOrders.filter(o => (o.status || '') === 'picked_up');
+    list.sort((a, b) => new Date(b.updated_at || b.timestamp) - new Date(a.updated_at || a.timestamp));
+    const grid = document.getElementById('completed-grid');
+    grid.innerHTML = list.length
+      ? list.map(o => buildCard(o, { showDue: false })).join('')
+      : `<div class="empty-state"><div class="icon">✅</div><h3>Nothing completed yet</h3></div>`;
+  }
+
+  // ══════════════ Mark complete / undo — same status field & endpoint /kitchen already used ══════════════
+  async function markCompleted(orderId) {
+    await setStatus(orderId, 'picked_up');
+  }
+  async function undoCompleted(orderId) {
+    await setStatus(orderId, 'confirmed');
+  }
+  async function setStatus(orderId, status) {
+    try {
+      const res = await fetch(`/api/orders/${orderId}/status${DASH_KEY ? '?key='+encodeURIComponent(DASH_KEY):''}`, {
+        method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({status}),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      const o = allOrders.find(x => x.order_id === orderId);
+      if (o) { o.status = status; o.updated_at = new Date().toISOString(); renderAll(); }
+    } catch(e) { alert('Failed to update order: ' + e.message); }
+  }
+
+  // ══════════════ Init ══════════════
+  connect();
+  setInterval(renderAll, 30000); // keeps "Due in Xm" / sort order fresh as time passes
+</script>
+</body>
+</html>

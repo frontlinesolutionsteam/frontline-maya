@@ -1,0 +1,124 @@
+{
+  "restaurant_id": "test-restaurant",
+  "restaurant_name": "Mario's Kitchen",
+  "manager_phone": "6692489997",
+  "manager_email": "manager@marioskitchen.com",
+  "twilio_phone": "+16692489997",
+  "hours": {
+    "monday":    { "open": "11:00", "close": "22:00" },
+    "tuesday":   { "open": "11:00", "close": "22:00" },
+    "wednesday": { "open": "11:00", "close": "22:00" },
+    "thursday":  { "open": "11:00", "close": "22:00" },
+    "friday":    { "open": "11:00", "close": "23:00" },
+    "saturday":  { "open": "12:00", "close": "23:00" },
+    "sunday":    null
+  },
+  "prep_time_estimate_minutes": 15,
+  "catering_threshold": { "min_dollars": 150 },
+  "menu": [
+    {
+      "id": "margherita-pizza",
+      "category": "Pizza",
+      "name": "Margherita Pizza",
+      "description": "Fresh mozzarella, basil, San Marzano tomato sauce",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [
+        { "name": "Gluten-free crust", "price_delta": 2.50 },
+        { "name": "Extra cheese",       "price_delta": 1.50 },
+        { "name": "Add pepperoni",      "price_delta": 2.00 }
+      ],
+      "combos": [
+        { "name": "Pizza + Drink", "items": ["margherita-pizza", "fountain-drink"], "price": 17.99 }
+      ]
+    },
+    {
+      "id": "pepperoni-pizza",
+      "category": "Pizza",
+      "name": "Pepperoni Pizza",
+      "description": "Classic pepperoni with mozzarella and tomato sauce",
+      "price": 16.99,
+      "available": true,
+      "modifiers": [
+        { "name": "Gluten-free crust", "price_delta": 2.50 },
+        { "name": "Extra cheese",      "price_delta": 1.50 },
+        { "name": "Extra pepperoni",   "price_delta": 2.00 }
+      ]
+    },
+    {
+      "id": "spaghetti-bolognese",
+      "category": "Pasta",
+      "name": "Spaghetti Bolognese",
+      "description": "House-made beef bolognese, fresh pasta, parmesan",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [
+        { "name": "Gluten-free pasta", "price_delta": 2.00 },
+        { "name": "Extra meat sauce",  "price_delta": 2.50 }
+      ]
+    },
+    {
+      "id": "fettuccine-alfredo",
+      "category": "Pasta",
+      "name": "Fettuccine Alfredo",
+      "description": "Creamy parmesan alfredo sauce",
+      "price": 12.99,
+      "available": true,
+      "modifiers": [
+        { "name": "Add grilled chicken", "price_delta": 4.00 },
+        { "name": "Add shrimp",          "price_delta": 5.00 }
+      ]
+    },
+    {
+      "id": "caesar-salad",
+      "category": "Salads",
+      "name": "Caesar Salad",
+      "description": "Romaine, croutons, parmesan, house Caesar dressing",
+      "price": 9.99,
+      "available": true,
+      "modifiers": [
+        { "name": "Add grilled chicken", "price_delta": 4.00 },
+        { "name": "No croutons",         "price_delta": 0 },
+        { "name": "Dressing on the side","price_delta": 0 }
+      ]
+    },
+    {
+      "id": "garlic-bread",
+      "category": "Sides",
+      "name": "Garlic Bread",
+      "description": "Toasted bread with roasted garlic butter",
+      "price": 4.99,
+      "available": true,
+      "modifiers": [
+        { "name": "With cheese", "price_delta": 1.50 }
+      ]
+    },
+    {
+      "id": "fountain-drink",
+      "category": "Drinks",
+      "name": "Fountain Drink",
+      "description": "Coke, Diet Coke, Sprite, Lemonade",
+      "price": 2.99,
+      "available": true,
+      "modifiers": []
+    },
+    {
+      "id": "sparkling-water",
+      "category": "Drinks",
+      "name": "Sparkling Water",
+      "description": "San Pellegrino 500ml",
+      "price": 3.49,
+      "available": true,
+      "modifiers": []
+    },
+    {
+      "id": "tiramisu",
+      "category": "Desserts",
+      "name": "Tiramisu",
+      "description": "Classic Italian tiramisu, espresso-soaked ladyfingers",
+      "price": 7.99,
+      "available": true,
+      "modifiers": []
+    }
+  ]
+}

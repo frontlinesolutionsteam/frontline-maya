@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revenue Tracker — Maya</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo { font-size: 22px; }
+  .header-title h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; }
+  .header-title p { font-size: 12px; color: #64748b; margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 14px; }
+  .nav-link {
+    color: #94a3b8; text-decoration: none; font-size: 13px;
+    padding: 6px 12px; border-radius: 6px;
+    transition: background .15s, color .15s;
+  }
+  .nav-link:hover { background: #334155; color: #f1f5f9; }
+  #refresh-badge {
+    font-size: 11px; color: #64748b;
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 20px; padding: 4px 10px;
+  }
+
+  /* ── Main ── */
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px; }
+
+  /* ── Month Banner ── */
+  .month-banner {
+    background: linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .month-label { font-size: 13px; color: rgba(255,255,255,.65); font-weight: 500; letter-spacing: .5px; text-transform: uppercase; }
+  .month-name { font-size: 28px; font-weight: 800; color: #fff; margin-top: 2px; }
+  .month-reset { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 4px; }
+
+  /* ── Stat cards ── */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr 1fr; } }
+  .card {
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 12px; padding: 20px 22px;
+  }
+  .card-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+  .card-value { font-size: 36px; font-weight: 800; margin-top: 6px; }
+  .card-value.green { color: #34d399; }
+  .card-value.blue  { color: #60a5fa; }
+  .card-value.slate { color: #94a3b8; }
+  .card-sub { font-size: 12px; color: #475569; margin-top: 4px; }
+
+  /* ── Source breakdown ── */
+  .section-title {
+    font-size: 14px; font-weight: 700; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: .5px;
+    margin-bottom: 14px;
+  }
+  .source-grid { display: grid; gap: 10px; margin-bottom: 32px; }
+  .source-row {
+    background: #1e293b; border: 1px solid #334155;
+    border-radius: 10px; padding: 14px 18px;
+    display: grid; grid-template-columns: 90px 1fr auto auto;
+    align-items: center; gap: 14px;
+  }
+  .source-name { font-size: 13px; font-weight: 600; color: #e2e8f0; text-transform: capitalize; }
+  .bar-track { background: #0f172a; border-radius: 99px; height: 8px; overflow: hidden; }
+  .bar-fill  { height: 100%; border-radius: 99px; transition: width .6s ease; }
+  .source-count { font-size: 15px; font-weight: 700; color: #f1f5f9; text-align: right; min-width: 32px; }
+  .source-rev   { font-size: 13px; color: #34d399; text-align: right; min-width: 60px; }
+
+  /* ── History table ── */
+  .history-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+  .history-table th {
+    text-align: left; font-size: 11px; font-weight: 600; color: #64748b;
+    text-transform: uppercase; letter-spacing: .5px;
+    padding: 8px 14px; border-bottom: 1px solid #334155;
+  }
+  .history-table th:not(:first-child) { text-align: right; }
+  .history-table td {
+    padding: 12px 14px; border-bottom: 1px solid #1e293b;
+    font-size: 14px; color: #cbd5e1;
+  }
+  .history-table td:not(:first-child) { text-align: right; }
+  .history-table tr:first-child td { color: #f1f5f9; font-weight: 600; }
+  .history-table tr:hover td { background: #1e293b; }
+  .revenue-cell { color: #34d399 !important; font-weight: 600; }
+  .current-badge {
+    display: inline-block; background: #1d4ed8; color: #fff;
+    font-size: 10px; font-weight: 600; border-radius: 4px;
+    padding: 2px 6px; margin-left: 8px; vertical-align: middle;
+  }
+
+  /* ── Footer ── */
+  .footer-note {
+    text-align: center; font-size: 12px; color: #334155; padding: 20px 0 8px;
+  }
+
+  /* ── Empty state ── */
+  .empty { text-align: center; padding: 40px; color: #475569; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <span class="header-logo">💰</span>
+    <div class="header-title">
+      <h1>Revenue Tracker</h1>
+      <p>$0.99 service fee per order · Maya Platform</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="refresh-badge">Refreshing…</span>
+    <a class="nav-link" href="javascript:location.href=location.pathname+'?key='+encodeURIComponent(sessionStorage.getItem('rkey')||'')">← Dashboard</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- Month banner -->
+  <div class="month-banner">
+    <div>
+      <div class="month-label">Current Billing Period</div>
+      <div class="month-name" id="month-name">—</div>
+      <div class="month-reset" id="month-reset">—</div>
+    </div>
+    <div style="text-align:right">
+      <div class="month-label">Counter resets</div>
+      <div class="month-name" id="reset-countdown" style="font-size:22px">—</div>
+    </div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Billable Orders</div>
+      <div class="card-value blue" id="stat-orders">—</div>
+      <div class="card-sub">this month (excl. cancelled)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Revenue This Month</div>
+      <div class="card-value green" id="stat-revenue">—</div>
+      <div class="card-sub" id="stat-fee-note">@ $0.99 / order</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Cancelled Orders</div>
+      <div class="card-value slate" id="stat-cancelled">—</div>
+      <div class="card-sub">not billed</div>
+    </div>
+  </div>
+
+  <!-- Source breakdown -->
+  <div class="section-title">Breakdown by Channel</div>
+  <div class="source-grid" id="source-grid">
+    <div class="empty">Loading…</div>
+  </div>
+
+  <!-- History -->
+  <div class="section-title">Monthly History</div>
+  <table class="history-table" id="history-table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Billable Orders</th>
+        <th>Cancelled</th>
+        <th>Revenue</th>
+      </tr>
+    </thead>
+    <tbody id="history-body">
+      <tr><td colspan="4" class="empty">Loading…</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer-note">Auto-refreshes every 60 seconds · Times in UTC</div>
+</main>
+
+<script>
+  const SERVICE_FEE = 0.99;
+
+  // Source colors
+  const SOURCE_COLORS = {
+    website:  '#60a5fa',
+    chatbot:  '#a78bfa',
+    voice:    '#34d399',
+    'in-store': '#fb923c',
+    unknown:  '#64748b',
+  };
+
+  // Persist password in sessionStorage so nav links work
+  const params = new URLSearchParams(location.search);
+  const key = params.get('key') || '';
+  if (key) sessionStorage.setItem('rkey', key);
+
+  const API = `/api/revenue${key ? '?key=' + encodeURIComponent(key) : ''}`;
+
+  function fmtMonth(ym) {
+    // "2026-06" → "June 2026"
+    const [y, m] = ym.split('-');
+    return new Date(+y, +m - 1, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  function daysLeftInMonth() {
+    const now = new Date();
+    const last = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    return last.getDate() - now.getDate();
+  }
+
+  function render(data) {
+    // Month banner
+    document.getElementById('month-name').textContent = fmtMonth(data.current_month);
+    const days = daysLeftInMonth();
+    document.getElementById('reset-countdown').textContent =
+      days === 0 ? 'Today!' : `${days} day${days !== 1 ? 's' : ''} left`;
+    document.getElementById('month-reset').textContent =
+      `Resets on the 1st of next month`;
+
+    // Stats
+    document.getElementById('stat-orders').textContent   = data.billable_orders;
+    document.getElementById('stat-revenue').textContent  = `$${data.revenue.toFixed(2)}`;
+    document.getElementById('stat-cancelled').textContent = data.cancelled_orders;
+
+    // Source breakdown
+    const grid = document.getElementById('source-grid');
+    const bySource = data.by_source || {};
+    const entries = Object.entries(bySource).sort((a, b) => b[1] - a[1]);
+    const maxCount = entries.length ? entries[0][1] : 1;
+
+    if (entries.length === 0) {
+      grid.innerHTML = '<div class="empty">No orders this month yet.</div>';
+    } else {
+      grid.innerHTML = entries.map(([src, cnt]) => {
+        const pct = Math.round((cnt / maxCount) * 100);
+        const color = SOURCE_COLORS[src] || '#64748b';
+        const rev = (cnt * SERVICE_FEE).toFixed(2);
+        const label = src === 'in-store' ? 'In-Store' :
+                      src.charAt(0).toUpperCase() + src.slice(1);
+        return `<div class="source-row">
+          <span class="source-name">${label}</span>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${pct}%;background:${color}"></div>
+          </div>
+          <span class="source-count">${cnt}</span>
+          <span class="source-rev">$${rev}</span>
+        </div>`;
+      }).join('');
+    }
+
+    // History table
+    const tbody = document.getElementById('history-body');
+    if (!data.history || data.history.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty">No history yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.history.map((row, i) => {
+      const isCurrent = row.month === data.current_month;
+      const cancelled = row.total - row.billable;
+      return `<tr>
+        <td>${fmtMonth(row.month)}${isCurrent ? '<span class="current-badge">NOW</span>' : ''}</td>
+        <td>${row.billable}</td>
+        <td>${cancelled}</td>
+        <td class="revenue-cell">$${row.revenue.toFixed(2)}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function load() {
+    try {
+      const res = await fetch(API);
+      if (res.status === 401) {
+        document.querySelector('main').innerHTML =
+          '<div class="empty" style="padding:60px">Session expired. <a href="/" style="color:#60a5fa">Return to login</a></div>';
+        return;
+      }
+      const data = await res.json();
+      render(data);
+      document.getElementById('refresh-badge').textContent =
+        'Updated ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      document.getElementById('refresh-badge').textContent = 'Error — retrying…';
+    }
+  }
+
+  load();
+  setInterval(load, 60_000);
+</script>
+
+</body>
+</html>

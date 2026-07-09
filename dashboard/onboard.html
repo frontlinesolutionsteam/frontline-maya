@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maya 2.0 — Restaurant Signup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0f0f1a;
+      --surface:  #1a1a2e;
+      --surface2: #16213e;
+      --accent:   #e94560;
+      --green:    #00d084;
+      --text:     #e8e8f0;
+      --muted:    #888aa0;
+      --border:   #2a2a45;
+    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 0 32px; height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 10px; }
+    .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+    .header-link { color: var(--muted); font-size: .9rem; text-decoration: none; }
+    .header-link:hover { color: var(--text); }
+
+    .hero { text-align: center; padding: 60px 24px 40px; }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 1.15rem; color: var(--muted); margin-top: 12px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+    .features { display: flex; justify-content: center; gap: 24px; margin: 32px auto; flex-wrap: wrap; max-width: 800px; padding: 0 24px; }
+    .feature { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; text-align: center; width: 160px; }
+    .feature .icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .feature p { font-size: .82rem; color: var(--muted); line-height: 1.4; }
+
+    .form-wrap { max-width: 640px; margin: 0 auto; padding: 0 24px 60px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 36px; }
+    .card h2 { font-size: 1.4rem; margin-bottom: 6px; }
+    .card .subtitle { color: var(--muted); font-size: .9rem; margin-bottom: 28px; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-grid .full { grid-column: 1 / -1; }
+    label { display: block; font-size: .82rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; letter-spacing: .3px; }
+    input, select {
+      width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: .9rem; outline: none; transition: border-color .15s;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--muted); }
+
+    .section-label { font-size: .75rem; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin: 24px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .hours-grid { display: grid; grid-template-columns: 100px 1fr 1fr 80px; gap: 8px; align-items: center; margin-bottom: 8px; font-size: .85rem; }
+    .hours-grid .day-label { color: var(--text); font-weight: 600; }
+    .hours-grid input[type=time] { padding: 8px 10px; }
+    .closed-toggle { display: flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--muted); cursor: pointer; }
+    .closed-toggle input { width: auto; }
+
+    .submit-btn {
+      width: 100%; padding: 14px; background: var(--accent); border: none; border-radius: 10px; color: white;
+      font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 28px; transition: opacity .15s;
+    }
+    .submit-btn:hover { opacity: .9; }
+    .submit-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .trial-note { text-align: center; margin-top: 14px; font-size: .82rem; color: var(--muted); }
+    .trial-note strong { color: var(--green); }
+
+    #success-msg {
+      display: none; text-align: center; padding: 40px 20px;
+      background: rgba(0,208,132,.06); border: 1px solid rgba(0,208,132,.2); border-radius: 12px; margin-top: 24px;
+    }
+    #success-msg h3 { color: var(--green); font-size: 1.4rem; margin-bottom: 10px; }
+    #success-msg p { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-dot"></div>Maya 2.0</div>
+  <a href="/" class="header-link">← Dashboard</a>
+</header>
+
+<div class="hero">
+  <h1>Your restaurant,<br><span>answered by AI</span></h1>
+  <p>Maya picks up every call, takes full orders, and sends them straight to your kitchen — zero missed calls.</p>
+</div>
+
+<div class="features">
+  <div class="feature"><div class="icon">📞</div><p>Every call answered</p></div>
+  <div class="feature"><div class="icon">🍽️</div><p>Full orders taken</p></div>
+  <div class="feature"><div class="icon">⚡</div><p>Live order dashboard</p></div>
+  <div class="feature"><div class="icon">🎉</div><p>Catering leads captured</p></div>
+  <div class="feature"><div class="icon">🌍</div><p>Multi-language</p></div>
+</div>
+
+<div class="form-wrap">
+  <div class="card">
+    <h2>Get started</h2>
+    <p class="subtitle">30-day free trial · No credit card required to register</p>
+
+    <form id="signup-form">
+      <div class="form-grid">
+        <div class="full">
+          <label>Restaurant Name *</label>
+          <input type="text" name="store_name" placeholder="e.g. Mario's Kitchen" required/>
+        </div>
+        <div>
+          <label>Your Email *</label>
+          <input type="email" name="owner_email" placeholder="you@restaurant.com" required/>
+        </div>
+        <div>
+          <label>Restaurant ID *</label>
+          <input type="text" name="restaurant_id" placeholder="marios-kitchen" required
+                 pattern="[a-z0-9\-]+" title="Lowercase letters, numbers, hyphens only"/>
+        </div>
+        <div>
+          <label>Manager Phone *</label>
+          <input type="tel" name="manager_phone" placeholder="6692489997" required/>
+        </div>
+        <div>
+          <label>Twilio Phone Number</label>
+          <input type="tel" name="twilio_phone" placeholder="+16692489997"
+                 title="The Twilio number that calls this restaurant"/>
+        </div>
+        <div>
+          <label>Order Notification Email</label>
+          <input type="email" name="order_email" placeholder="orders@restaurant.com"/>
+        </div>
+        <div>
+          <label>Prep Time (minutes)</label>
+          <input type="number" name="prep_time" value="10" min="1" max="120"/>
+        </div>
+        <div>
+          <label>Catering Threshold ($)</label>
+          <input type="number" name="catering_threshold" value="150" min="0"/>
+        </div>
+      </div>
+
+      <div class="section-label">Business Hours</div>
+      <div id="hours-container"></div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">Start Free Trial →</button>
+      <p class="trial-note"><strong>30 days free</strong>, then $500/month per location. Cancel anytime.</p>
+    </form>
+
+    <div id="success-msg">
+      <h3>🎉 You're registered!</h3>
+      <p>
+        Next step: upload your menu at <strong>/menu/upload</strong><br>
+        Then point your Twilio number's Voice webhook to:<br>
+        <code id="webhook-url" style="color:var(--accent)"></code><br><br>
+        That's it — Maya will start taking calls immediately.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+  const DEFAULT_OPEN  = '11:00';
+  const DEFAULT_CLOSE = '22:00';
+  const DEFAULT_CLOSED = ['sunday'];
+
+  // ── Build hours fields ──────────────────────────────────────────────────────
+  function buildHours() {
+    const container = document.getElementById('hours-container');
+    container.innerHTML = DAYS.map(day => {
+      const isClosed = DEFAULT_CLOSED.includes(day);
+      return `
+        <div class="hours-grid" id="hours-row-${day}">
+          <span class="day-label">${day[0].toUpperCase() + day.slice(1)}</span>
+          <input type="time" name="open_${day}"  value="${DEFAULT_OPEN}"  ${isClosed ? 'disabled' : ''}/>
+          <input type="time" name="close_${day}" value="${DEFAULT_CLOSE}" ${isClosed ? 'disabled' : ''}/>
+          <label class="closed-toggle">
+            <input type="checkbox" name="closed_${day}" ${isClosed ? 'checked' : ''}
+              onchange="toggleDay('${day}', this.checked)"/>
+            Closed
+          </label>
+        </div>`;
+    }).join('');
+  }
+
+  function toggleDay(day, closed) {
+    const row = document.getElementById(`hours-row-${day}`);
+    row.querySelector(`[name=open_${day}]`).disabled  = closed;
+    row.querySelector(`[name=close_${day}]`).disabled = closed;
+  }
+
+  buildHours();
+
+  // ── Auto-generate restaurant_id from name ──────────────────────────────────
+  document.querySelector('[name=store_name]').addEventListener('input', function() {
+    const idField = document.querySelector('[name=restaurant_id]');
+    if (!idField._touched) {
+      idField.value = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+  });
+  document.querySelector('[name=restaurant_id]').addEventListener('input', function() {
+    this._touched = true;
+  });
+
+  // ── Form Submit ────────────────────────────────────────────────────────────
+  document.getElementById('signup-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Registering...';
+
+    const fd = new FormData(this);
+    const hours = {};
+    DAYS.forEach(day => {
+      const closed = fd.get(`closed_${day}`) === 'on';
+      hours[day] = closed ? null : { open: fd.get(`open_${day}`), close: fd.get(`close_${day}`) };
+    });
+
+    const body = {
+      store_name:          fd.get('store_name'),
+      owner_email:         fd.get('owner_email'),
+      restaurant_id:       fd.get('restaurant_id'),
+      manager_phone:       fd.get('manager_phone'),
+      twilio_phone:        fd.get('twilio_phone'),
+      order_email:         fd.get('order_email') || fd.get('owner_email'),
+      prep_time:           parseInt(fd.get('prep_time')),
+      catering_threshold:  parseFloat(fd.get('catering_threshold')),
+      hours,
+    };
+
+    try {
+      const res  = await fetch('/onboard/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      const data = await res.json();
+
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+        return;
+      }
+
+      // Success (no Stripe configured)
+      document.getElementById('signup-form').style.display = 'none';
+      const sm = document.getElementById('success-msg');
+      sm.style.display = 'block';
+      document.getElementById('webhook-url').textContent = `${location.origin}/twilio/voice`;
+    } catch(err) {
+      alert('Registration failed: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Start Free Trial →';
+    }
+  });
+</script>
+</body>
+</html>

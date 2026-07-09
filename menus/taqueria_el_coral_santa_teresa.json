@@ -1,0 +1,4098 @@
+{
+  "restaurant_id": "taqueria_el_coral_santa_teresa",
+  "restaurant_name": "Taqueria El Coral \u2014 5899 Santa Teresa Blvd #109",
+  "manager_phone": "669-248-9997",
+  "manager_email": "frontline.solutions.team@gmail.com",
+  "timezone": "America/Los_Angeles",
+  "hours": {
+    "monday": {
+      "open": "10:00",
+      "close": "20:30"
+    },
+    "tuesday": {
+      "open": "10:00",
+      "close": "20:30"
+    },
+    "wednesday": {
+      "open": "10:00",
+      "close": "20:30"
+    },
+    "thursday": {
+      "open": "10:00",
+      "close": "20:30"
+    },
+    "friday": {
+      "open": "10:00",
+      "close": "20:30"
+    },
+    "saturday": {
+      "open": "10:00",
+      "close": "16:00"
+    },
+    "sunday": {
+      "open": "10:00",
+      "close": "16:00"
+    }
+  },
+  "prep_time_estimate_minutes": 10,
+  "catering_threshold": {
+    "min_dollars": 150
+  },
+  "menu": [
+    {
+      "id": "taco_regular",
+      "category": "Tacos",
+      "name": "Regular Taco",
+      "description": "Choice of Meat, Onion, Cilantro & Hot Sauce on a Soft Corn Tortilla",
+      "price": 4.09,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "taco_super",
+      "category": "Tacos",
+      "name": "Super Taco",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Jack Cheese, Sour Cream & Guacamole Sauce on a Soft Corn Tortilla",
+      "price": 6.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "taco_crispy",
+      "category": "Tacos",
+      "name": "Crispy Taco",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Jack Cheese, Sour Cream & Guacamole Sauce on a Hard Shell Tortilla",
+      "price": 4.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "taco_veggie",
+      "category": "Tacos",
+      "name": "Veggie Taco",
+      "description": "Rice, Refried Beans, Onion, Cilantro, Tomatoes, Lettuce, Sour Cream, Jack Cheese & Guacamole Sauce on a Soft Corn Tortilla",
+      "price": 6.19,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "taco_shrimp",
+      "category": "Tacos",
+      "name": "Shrimp Taco",
+      "description": "Shrimp, Onion, Cilantro, Lettuce, Tomatoes, Jack Cheese, Sour Cream & Guacamole Sauce on a Soft Flour Tortilla",
+      "price": 8.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "taco_fish",
+      "category": "Tacos",
+      "name": "Fish Taco",
+      "description": "Tilapia Fish, Onion, Cilantro, Lettuce, Tomatoes, Jack Cheese, Sour Cream & Guacamole Sauce on a Soft Flour Tortilla",
+      "price": 8.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "taco_barbacoa_plancha",
+      "category": "Tacos",
+      "name": "Barbacoa Tacos A La Plancha (Birria Tacos)",
+      "description": "Birria-style Barbacoa tacos cooked on the plancha",
+      "price": 4.19,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "combo_regular_tacos_1",
+      "category": "Tacos",
+      "name": "Combo Regular Tacos (1)",
+      "description": "1 Regular Taco with a Side of Rice and Refried Beans",
+      "price": 9.9,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_regular_tacos_2",
+      "category": "Tacos",
+      "name": "Combo Regular Tacos (2)",
+      "description": "2 Regular Tacos with a Side of Rice and Refried Beans",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_regular_tacos_3",
+      "category": "Tacos",
+      "name": "Combo Regular Tacos (3)",
+      "description": "3 Regular Tacos with a Side of Rice and Refried Beans",
+      "price": 18.09,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_regular_tacos_4",
+      "category": "Tacos",
+      "name": "Combo Regular Tacos (4)",
+      "description": "4 Regular Tacos with a Side of Rice and Refried Beans",
+      "price": 22.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_super_tacos_1",
+      "category": "Tacos",
+      "name": "Combo Super Tacos (1)",
+      "description": "1 Super Taco with a Side of Rice and Refried Beans",
+      "price": 12.49,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_super_tacos_2",
+      "category": "Tacos",
+      "name": "Combo Super Tacos (2)",
+      "description": "2 Super Tacos with a Side of Rice and Refried Beans",
+      "price": 19.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_super_tacos_3",
+      "category": "Tacos",
+      "name": "Combo Super Tacos (3)",
+      "description": "3 Super Tacos with a Side of Rice and Refried Beans",
+      "price": 25.89,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_crispy_tacos_1",
+      "category": "Tacos",
+      "name": "Combo Crispy Tacos (1)",
+      "description": "1 Hard Shell Taco with a Side of Rice and Refried Beans",
+      "price": 10.49,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_crispy_tacos_2",
+      "category": "Tacos",
+      "name": "Combo Crispy Tacos (2)",
+      "description": "2 Hard Shell Tacos with a Side of Rice and Refried Beans",
+      "price": 15.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "combo_crispy_tacos_3",
+      "category": "Tacos",
+      "name": "Combo Crispy Tacos (3)",
+      "description": "3 Hard Shell Tacos with a Side of Rice and Refried Beans",
+      "price": 19.89,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_regular",
+      "category": "Burritos",
+      "name": "Regular Burrito",
+      "description": "Choice of Meat, Rice, Refried Beans, Onion, Cilantro, Sour Cream & Hot Sauce",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_super",
+      "category": "Burritos",
+      "name": "Super Burrito",
+      "description": "Choice of Meat, Rice, Refried Beans, Onion, Cilantro, Lettuce, Jack Cheese, Guacamole Sauce, Sour Cream & Hot Sauce",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_super_fajita",
+      "category": "Burritos",
+      "name": "Super Burrito Fajita",
+      "description": "Super Burrito with fajita-style grilled meat and vegetables",
+      "price": 17.79,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_veggie",
+      "category": "Burritos",
+      "name": "Veggie Burrito",
+      "description": "Rice, Refried Beans, Onion, Cilantro, Lettuce, Tomatoes, Jack Cheese, Guacamole Sauce, Sour Cream & Hot Sauce",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_mojado",
+      "category": "Burritos",
+      "name": "Burrito Mojado",
+      "description": "Choice of Meat, Rice, Refried Beans, Onion, Cilantro, Lettuce, Jack Cheese, Guacamole Sauce, Sour Cream & Hot Sauce \u2014 topped with sauce (wet burrito)",
+      "price": 18.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_veggie_mojado",
+      "category": "Burritos",
+      "name": "Veggie Burrito Mojado",
+      "description": "Veggie wet burrito topped with sauce",
+      "price": 17.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_regular_mojado",
+      "category": "Burritos",
+      "name": "Regular Burrito Mojado",
+      "description": "Regular wet burrito topped with sauce",
+      "price": 17.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_fish_shrimp",
+      "category": "Burritos",
+      "name": "Fish & Shrimp Burrito",
+      "description": "Shrimp, Tilapia Fish, Rice, Refried Beans, Onion, Cilantro, Lettuce, Tomatoes, Jack Cheese, Guacamole Sauce, Sour Cream & Hot Sauce",
+      "price": 18.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_fish",
+      "category": "Burritos",
+      "name": "Fish Burrito",
+      "description": "Tilapia Fish, Rice, Refried Beans, Onion, Cilantro, Lettuce, Tomatoes, Jack Cheese, Guacamole Sauce, Sour Cream & Hot Sauce",
+      "price": 18.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_shrimp",
+      "category": "Burritos",
+      "name": "Shrimp Burrito",
+      "description": "Shrimp, Rice, Refried Beans, Onion, Cilantro, Lettuce, Tomatoes, Jack Cheese, Guacamole Sauce, Sour Cream & Hot Sauce",
+      "price": 18.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_cali",
+      "category": "Burritos",
+      "name": "Cali Burrito",
+      "description": "Choice of Meat, Fries, Avocado Sauce, Sour Cream, Cheese",
+      "price": 13.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_regular_tripa",
+      "category": "Burritos",
+      "name": "Regular Burrito Tripa",
+      "description": "Regular burrito with Tripa (intestine)",
+      "price": 15.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_super_tripa",
+      "category": "Burritos",
+      "name": "Super Burrito Tripa",
+      "description": "Super burrito with Tripa (intestine)",
+      "price": 18.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bowl_regular",
+      "category": "Burritos",
+      "name": "Regular Burrito Bowl",
+      "description": "Regular burrito served as a bowl (no tortilla)",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_bowl_super",
+      "category": "Burritos",
+      "name": "Super Burrito Bowl",
+      "description": "Super burrito served as a bowl (no tortilla)",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "burrito_bowl_veggie",
+      "category": "Burritos",
+      "name": "Veggie Burrito Bowl",
+      "description": "Veggie burrito served as a bowl (no tortilla)",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bean_cheese",
+      "category": "Burritos",
+      "name": "Burrito Bean & Cheese",
+      "description": "Refried Beans & Cheese",
+      "price": 7.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_rice_cheese",
+      "category": "Burritos",
+      "name": "Burrito Rice & Cheese",
+      "description": "Rice & Cheese",
+      "price": 7.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bean_rice_cheese",
+      "category": "Burritos",
+      "name": "Burrito Bean, Rice & Cheese",
+      "description": "Refried Beans, Rice & Cheese",
+      "price": 8.09,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bean_rice",
+      "category": "Burritos",
+      "name": "Burrito Bean & Rice",
+      "description": "Refried Beans & Rice",
+      "price": 7.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bean_rice_cheese_mojado",
+      "category": "Burritos",
+      "name": "Burrito Bean, Rice & Cheese (Mojado)",
+      "description": "Wet burrito with Refried Beans, Rice & Cheese topped with sauce",
+      "price": 11.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bean_cheese_mojado",
+      "category": "Burritos",
+      "name": "Burrito Bean & Cheese (Mojado)",
+      "description": "Wet burrito with Beans & Cheese topped with sauce",
+      "price": 11.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "burrito_bean_rice_mojado",
+      "category": "Burritos",
+      "name": "Burrito Bean & Rice (Mojado)",
+      "description": "Wet burrito with Beans & Rice topped with sauce",
+      "price": 11.19,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "quesadilla_regular",
+      "category": "Quesadillas",
+      "name": "Regular Quesadilla",
+      "description": "Choice of Meat, Onion, Cilantro & Cheese",
+      "price": 10.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "quesadilla_super",
+      "category": "Quesadillas",
+      "name": "Super Quesadilla",
+      "description": "Choice of Meat, Onion, Cilantro, Avocado Sauce, Sour Cream & Cheese with small salad on the side",
+      "price": 11.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "quesadilla_veggie",
+      "category": "Quesadillas",
+      "name": "Veggie Quesadilla",
+      "description": "Veggie quesadilla with cheese",
+      "price": 10.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "quesadilla_large_cheese",
+      "category": "Quesadillas",
+      "name": "Large Cheese Quesadilla",
+      "description": "Large plain cheese quesadilla",
+      "price": 5.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "quesadilla_shrimp_regular",
+      "category": "Quesadillas",
+      "name": "Regular Shrimp Quesadilla (10 shrimp)",
+      "description": "Quesadilla with 10 shrimp",
+      "price": 15.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "quesadilla_shrimp_super",
+      "category": "Quesadillas",
+      "name": "Super Shrimp Quesadilla (10 shrimp)",
+      "description": "Super quesadilla with 10 shrimp",
+      "price": 17.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "salad_veggie",
+      "category": "Salads",
+      "name": "Veggie Salad",
+      "description": "Fresh veggie salad",
+      "price": 10.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "salad_mexican",
+      "category": "Salads",
+      "name": "Mexican Salad",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Tomatoes, Sliced Avocado, Radishes & Cheese",
+      "price": 16.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "salad_green",
+      "category": "Salads",
+      "name": "Green Salad",
+      "description": "Simple green salad",
+      "price": 7.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "salad_shrimp",
+      "category": "Salads",
+      "name": "Shrimp Salad (10 shrimp)",
+      "description": "Salad with 10 shrimp",
+      "price": 19.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "taco_salad",
+      "category": "Taco Salads",
+      "name": "Taco Salad",
+      "description": "Choice of Meat, Rice, Refried Beans, Onion, Cilantro, Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Monterey Jack Cheese & Cotija Cheese in a tortilla bowl shell",
+      "price": 14.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "taco_salad_veggie",
+      "category": "Taco Salads",
+      "name": "Veggie Taco Salad",
+      "description": "Veggie taco salad in a tortilla bowl shell",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "taco_salad_shrimp",
+      "category": "Taco Salads",
+      "name": "Shrimp Taco Salad (10 shrimp)",
+      "description": "Taco salad with 10 shrimp in a tortilla bowl shell",
+      "price": 17.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "taco_salad_no_shell",
+      "category": "Taco Salads",
+      "name": "No Shell Taco Salad",
+      "description": "Taco salad served without the tortilla shell bowl",
+      "price": 14.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "taco_salad_no_shell_veggie",
+      "category": "Taco Salads",
+      "name": "No Shell Veggie Taco Salad",
+      "description": "Veggie taco salad without the tortilla shell bowl",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "tostada",
+      "category": "Tostadas",
+      "name": "Tostada",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Monterey Jack Cheese & Cotija Cheese",
+      "price": 9.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "tostada_veggie",
+      "category": "Tostadas",
+      "name": "Veggie Tostada",
+      "description": "Veggie tostada",
+      "price": 8.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "tostada_shrimp_ceviche",
+      "category": "Tostadas",
+      "name": "Shrimp Ceviche Tostada",
+      "description": "Tostada topped with shrimp ceviche",
+      "price": 10.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "nachos",
+      "category": "Nachos",
+      "name": "Nachos",
+      "description": "Choice of Meat, Refried Beans, Onion, Cilantro, Tomatoes, Avocado Sauce, Sour Cream, Monterey Jack Cheese & Cotija Cheese",
+      "price": 15.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "nachos_veggie",
+      "category": "Nachos",
+      "name": "Veggie Nachos",
+      "description": "Nachos without meat",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "nachos_shrimp",
+      "category": "Nachos",
+      "name": "Shrimp Nachos (12 shrimp)",
+      "description": "Nachos with 12 shrimp",
+      "price": 20.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "nachos_beans_cheese",
+      "category": "Nachos",
+      "name": "Beans & Cheese Nachos",
+      "description": "Nachos with beans and cheese only",
+      "price": 9.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "meat_fries",
+      "category": "Meat Fries",
+      "name": "Meat Fries",
+      "description": "Choice of Meat, Fries, Onion, Cilantro, Tomatoes, Avocado Sauce, Sour Cream & Monterey Jack Cheese",
+      "price": 17.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "veggie_fries",
+      "category": "Meat Fries",
+      "name": "Veggie Fries",
+      "description": "Fries with veggie toppings",
+      "price": 15.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "torta",
+      "category": "Tortas",
+      "name": "Torta",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Mayonnaise & Cheese on a toasted bun",
+      "price": 11.59,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "torta_veggie",
+      "category": "Tortas",
+      "name": "Veggie Torta",
+      "description": "Veggie torta on a toasted bun",
+      "price": 10.89,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "torta_shrimp",
+      "category": "Tortas",
+      "name": "Shrimp Torta (10 shrimp)",
+      "description": "Torta with 10 shrimp",
+      "price": 16.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "torta_tripa",
+      "category": "Tortas",
+      "name": "Torta Tripa",
+      "description": "Torta with Tripa (intestine)",
+      "price": 16.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "sopes_3",
+      "category": "Sopes",
+      "name": "Sopes (3)",
+      "description": "3 Sopes \u2014 Choice of Meat, Rice, Refried Beans, Onion, Cilantro, Lettuce, Avocado Sauce, Sour Cream, Cheese & Cotija Cheese",
+      "price": 15.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "sope_1",
+      "category": "Sopes",
+      "name": "Sope (1)",
+      "description": "Single sope a la carte",
+      "price": 5.39,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "chimichanga_a_la_carte",
+      "category": "Chimichangas",
+      "name": "Chimichanga A La Carte",
+      "description": "Chimichanga a la carte without sides",
+      "price": 10.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "chimichanga",
+      "category": "Chimichangas",
+      "name": "Chimichanga",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Cheese, Cotija Cheese with Rice and Refried Beans on the side",
+      "price": 14.39,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "chimichanga_veggie",
+      "category": "Chimichangas",
+      "name": "Veggie Chimichanga",
+      "description": "Veggie chimichanga with sides",
+      "price": 13.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "chimichanga_shrimp",
+      "category": "Chimichangas",
+      "name": "Shrimp Chimichanga (10 shrimp)",
+      "description": "Chimichanga with 10 shrimp and sides",
+      "price": 17.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "huarache",
+      "category": "Huaraches",
+      "name": "Huarache",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Cheese, Cotija Cheese, Rice & Refried Beans",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "huarache_veggie",
+      "category": "Huaraches",
+      "name": "Veggie Huarache",
+      "description": "Veggie huarache",
+      "price": 13.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "huarache_tripa",
+      "category": "Huaraches",
+      "name": "Huarache Tripa",
+      "description": "Huarache with Tripa (intestine)",
+      "price": 17.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "gordita",
+      "category": "Gorditas",
+      "name": "Gordita",
+      "description": "Choice of Meat, Onion, Cilantro, Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Monterey Jack Cheese & Cotija Cheese",
+      "price": 5.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Grilled Steak",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Grilled Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Al Pastor",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Carnitas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chorizo",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tripa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Verde",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Tongue",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Beef Head",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Barbacoa",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Buche",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chile Relleno",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "gordita_veggie",
+      "category": "Gorditas",
+      "name": "Veggie Gordita",
+      "description": "Veggie gordita",
+      "price": 5.19,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "gordita_chicharron",
+      "category": "Gorditas",
+      "name": "Gordita Chicharron",
+      "description": "Gordita with chicharr\u00f3n (fried pork skin)",
+      "price": 6.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "flautas_platter_3",
+      "category": "Flautas",
+      "name": "Flautas Platter (3)",
+      "description": "3 Flautas (Beef or Chicken), Lettuce, Tomatoes, Avocado Sauce, Sour Cream, Cotija Cheese, Rice & Refried Beans on the side",
+      "price": 16.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "mexican_flautas_3",
+      "category": "Flautas",
+      "name": "Mexican Flautas (3)",
+      "description": "3 Mexican-style flautas",
+      "price": 15.09,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "flauta_a_la_carte",
+      "category": "Flautas",
+      "name": "Flauta A La Carte (1)",
+      "description": "Single flauta a la carte",
+      "price": 4.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "enchiladas_platter_3",
+      "category": "Enchiladas",
+      "name": "Enchiladas Platter (3)",
+      "description": "3 Enchiladas (Beef, Chicken, or Cheese), Lettuce, Tomatoes, Sour Cream, Guacamole Sauce, Cotija Cheese, Rice & Refried Beans on the side",
+      "price": 16.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Cheese",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "enchiladas_platter_2",
+      "category": "Enchiladas",
+      "name": "Enchiladas Platter (2)",
+      "description": "2 Enchiladas with sides",
+      "price": 14.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Cheese",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "enchiladas_platter_1",
+      "category": "Enchiladas",
+      "name": "Enchiladas Platter (1)",
+      "description": "1 Enchilada with sides",
+      "price": 10.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Cheese",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "enchilada_a_la_carte",
+      "category": "Enchiladas",
+      "name": "Enchilada A La Carte (1)",
+      "description": "Single enchilada, no sides",
+      "price": 4.19,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Beef",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Cheese",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "enchiladas_shrimp_3",
+      "category": "Enchiladas",
+      "name": "Shrimp Enchiladas (3)",
+      "description": "3 enchiladas with shrimp",
+      "price": 20.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "tamal",
+      "category": "Tamales",
+      "name": "Tamal (1)",
+      "description": "Single tamal \u2014 flavors: Pork, Chicken, Rajas, Strawberry, Guava, Pineapple, Elote",
+      "price": 4.0,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Pork",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Chicken",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Rajas",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Strawberry",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Guava",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Pineapple",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Elote",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "tamal_beef",
+      "category": "Tamales",
+      "name": "Beef Tamal (1)",
+      "description": "Single beef tamal",
+      "price": 5.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "combo_tamales_2",
+      "category": "Tamales",
+      "name": "Combo Tamales (2)",
+      "description": "2 tamales combo",
+      "price": 13.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "combo_tamales_1",
+      "category": "Tamales",
+      "name": "Combo Tamales (1)",
+      "description": "1 tamal combo",
+      "price": 9.97,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "dozen_tamales",
+      "category": "Tamales",
+      "name": "Dozen Tamales (12)",
+      "description": "One dozen tamales",
+      "price": 40.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "caldo_barbacoa",
+      "category": "Caldos (Soups)",
+      "name": "Barbacoa Caldo",
+      "description": "Hearty barbacoa soup",
+      "price": 19.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "caldo_menudo",
+      "category": "Caldos (Soups)",
+      "name": "Menudo Caldo",
+      "description": "Traditional menudo soup",
+      "price": 18.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "caldo_pozole",
+      "category": "Caldos (Soups)",
+      "name": "Pozole Caldo",
+      "description": "Traditional pozole soup",
+      "price": 18.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "caldo_de_res",
+      "category": "Caldos (Soups)",
+      "name": "Caldo De Res",
+      "description": "Beef soup",
+      "price": 19.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "caldo_birria_chivo",
+      "category": "Caldos (Soups)",
+      "name": "Birria Chivo Caldo",
+      "description": "Goat birria soup",
+      "price": 21.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "tropical_small",
+      "category": "Drinks",
+      "name": "Tropical Drink (Small)",
+      "description": "Small tropical drink",
+      "price": 3.89,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Horchata",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Pi\u00f1a",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Jamaica",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tamarindo",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "tropical_medium",
+      "category": "Drinks",
+      "name": "Tropical Drink (Medium)",
+      "description": "Medium tropical drink",
+      "price": 5.29,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Horchata",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Pi\u00f1a",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Jamaica",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tamarindo",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "tropical_large",
+      "category": "Drinks",
+      "name": "Tropical Drink (Large)",
+      "description": "Large tropical drink",
+      "price": 5.79,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Horchata",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Pi\u00f1a",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Jamaica",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Tamarindo",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "jarritos",
+      "category": "Drinks",
+      "name": "Jarritos",
+      "description": "Mexican soda bottle",
+      "price": 3.69,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Mineragua",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Mandarin",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Lime",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Mango",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Strawberry",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Guava",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Pineapple",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Fruit Punch",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Sangria",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Sidral",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "mexican_squirt",
+      "category": "Drinks",
+      "name": "Mexican Squirt",
+      "description": "Mexican Squirt bottle",
+      "price": 3.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "mexican_coke_half_liter",
+      "category": "Drinks",
+      "name": "Mexican Bottle (Coke Half Liter)",
+      "description": "Mexican Coca-Cola half liter bottle",
+      "price": 4.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "bottled_beverage",
+      "category": "Drinks",
+      "name": "Bottled Beverage",
+      "description": "Bottled soda",
+      "price": 3.49,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Coke",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Sprite",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "coconut_water",
+      "category": "Drinks",
+      "name": "Coconut Water Can",
+      "description": "Canned coconut water",
+      "price": 2.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "energy_drink",
+      "category": "Drinks",
+      "name": "Energy Drink",
+      "description": "Energy drink can",
+      "price": 3.39,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Red Bull",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Monster",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Rockstar",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Celsius",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "can_soda",
+      "category": "Drinks",
+      "name": "Can Soda",
+      "description": "Canned soda",
+      "price": 1.99,
+      "available": true,
+      "modifiers": [
+        {
+          "name": "Coke",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Diet Coke",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Coke Zero",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Sprite",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Dr. Pepper",
+          "price_delta": 0.0
+        },
+        {
+          "name": "Squirt",
+          "price_delta": 0.0
+        }
+      ],
+      "combos": []
+    },
+    {
+      "id": "b_egg_tomato_onion_jalapeno",
+      "category": "Breakfast",
+      "name": "Eggs, Tomatoes, Onion, Jalape\u00f1os",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with tomatoes, onion, and jalape\u00f1os",
+      "price": 13.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_bacon_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Bacon & Potatoes",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, bacon, and potatoes",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_ham_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Ham & Potatoes",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, ham, and potatoes",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_chorizo_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Chorizo & Potatoes",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, chorizo, and potatoes",
+      "price": 15.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_steak_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Steak & Potatoes",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, steak, and potatoes",
+      "price": 15.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_chorizo",
+      "category": "Breakfast",
+      "name": "Eggs & Chorizo",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with chorizo",
+      "price": 14.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_bacon",
+      "category": "Breakfast",
+      "name": "Eggs & Bacon",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with bacon",
+      "price": 13.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_ham",
+      "category": "Breakfast",
+      "name": "Eggs & Ham",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with ham",
+      "price": 13.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_steak",
+      "category": "Breakfast",
+      "name": "Eggs & Steak",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with steak",
+      "price": 15.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_cheese",
+      "category": "Breakfast",
+      "name": "Eggs & Cheese",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with cheese",
+      "price": 9.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_beans_potatoes_cheese",
+      "category": "Breakfast",
+      "name": "Eggs, Beans, Potatoes & Cheese",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, beans, potatoes, and cheese",
+      "price": 9.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_beans_cheese",
+      "category": "Breakfast",
+      "name": "Eggs, Beans & Cheese",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, beans, and cheese",
+      "price": 9.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs & Potatoes",
+      "description": "[9:00 AM - 11:30 AM only] Scrambled eggs with potatoes",
+      "price": 7.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_eggs_potatoes_cheese",
+      "category": "Breakfast",
+      "name": "Eggs, Potatoes & Cheese",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, potatoes, and cheese",
+      "price": 9.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_bacon",
+      "category": "Breakfast",
+      "name": "Eggs & Bacon Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs and bacon platter with Rice, Refried Beans & Tortillas",
+      "price": 16.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_huevos_rancheros",
+      "category": "Breakfast",
+      "name": "Huevos Rancheros Platter",
+      "description": "[9:00 AM - 11:30 AM only] Huevos rancheros platter with Rice, Refried Beans & Tortillas",
+      "price": 16.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_huevos_mexicana",
+      "category": "Breakfast",
+      "name": "Huevos a la Mexicana Platter",
+      "description": "[9:00 AM - 11:30 AM only] Huevos a la mexicana platter with Rice, Refried Beans & Tortillas",
+      "price": 15.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_chorizo",
+      "category": "Breakfast",
+      "name": "Eggs & Chorizo Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs and chorizo platter with Rice, Refried Beans & Tortillas",
+      "price": 16.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_ham",
+      "category": "Breakfast",
+      "name": "Eggs & Ham Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs and ham platter with Rice, Refried Beans & Tortillas",
+      "price": 16.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_steak",
+      "category": "Breakfast",
+      "name": "Eggs & Steak Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs and steak platter with Rice, Refried Beans & Tortillas",
+      "price": 17.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_ham_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Ham & Potatoes Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, ham, and potatoes platter with Rice, Refried Beans & Tortillas",
+      "price": 17.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_bacon_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Bacon & Potatoes Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, bacon, and potatoes platter with Rice, Refried Beans & Tortillas",
+      "price": 17.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_chorizo_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Chorizo & Potatoes Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, chorizo, and potatoes platter with Rice, Refried Beans & Tortillas",
+      "price": 17.59,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "b_platter_eggs_steak_potatoes",
+      "category": "Breakfast",
+      "name": "Eggs, Steak & Potatoes Platter",
+      "description": "[9:00 AM - 11:30 AM only] Eggs, steak, and potatoes platter with Rice, Refried Beans & Tortillas",
+      "price": 17.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_chicken_fajitas",
+      "category": "Grilled Platters",
+      "name": "Chicken Fajitas Platter",
+      "description": "Grilled Chicken, Saut\u00e9ed Onion & Bell Peppers with Rice, Refried Beans & Tortillas",
+      "price": 19.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "chicken_fajitas_a_la_carte",
+      "category": "Grilled Platters",
+      "name": "Chicken Fajitas A La Carte",
+      "description": "Grilled Chicken, Saut\u00e9ed Onion & Bell Peppers, no sides",
+      "price": 14.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_steak_fajitas",
+      "category": "Grilled Platters",
+      "name": "Steak Fajitas Platter",
+      "description": "Grilled Steak, Saut\u00e9ed Onion & Bell Peppers with Rice, Refried Beans & Tortillas",
+      "price": 20.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "steak_fajitas_a_la_carte",
+      "category": "Grilled Platters",
+      "name": "Steak Fajitas A La Carte",
+      "description": "Grilled Steak, Saut\u00e9ed Onion & Bell Peppers, no sides",
+      "price": 18.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_steak_chicken_fajitas",
+      "category": "Grilled Platters",
+      "name": "Steak & Chicken Fajitas Platter",
+      "description": "Grilled Steak and Chicken, Saut\u00e9ed Onion & Bell Peppers with Rice, Refried Beans & Tortillas",
+      "price": 19.89,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_carne_asada",
+      "category": "Grilled Platters",
+      "name": "Carne Asada Platter",
+      "description": "Grilled Steak & Saut\u00e9ed Onion with Rice, Refried Beans & Tortillas",
+      "price": 20.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "carne_asada_a_la_carte",
+      "category": "Grilled Platters",
+      "name": "Carne Asada A La Carte",
+      "description": "Grilled Steak & Saut\u00e9ed Onion, no sides",
+      "price": 16.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_chile_relleno_1",
+      "category": "Grilled Platters",
+      "name": "Chile Relleno Platter (1)",
+      "description": "1 Cheese Stuffed Poblano Pepper with Rice, Refried Beans & Tortillas",
+      "price": 13.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_chile_rellenos_2",
+      "category": "Grilled Platters",
+      "name": "Chile Rellenos Platter (2)",
+      "description": "2 Cheese Stuffed Poblano Peppers with Rice, Refried Beans & Tortillas",
+      "price": 19.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "chile_relleno_a_la_carte",
+      "category": "Grilled Platters",
+      "name": "Chile Relleno A La Carte (1)",
+      "description": "1 Cheese Stuffed Poblano Pepper, no sides",
+      "price": 7.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_carnitas",
+      "category": "Grilled Platters",
+      "name": "Carnitas Platter",
+      "description": "Carnitas with Rice, Refried Beans & Tortillas",
+      "price": 19.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "carnitas_a_la_carte",
+      "category": "Grilled Platters",
+      "name": "Carnitas A La Carte",
+      "description": "Carnitas, no sides",
+      "price": 14.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_chile_verde",
+      "category": "Grilled Platters",
+      "name": "Chile Verde Platter",
+      "description": "Pork in Green Sauce with Rice, Refried Beans & Tortillas",
+      "price": 19.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_barbacoa",
+      "category": "Grilled Platters",
+      "name": "Barbacoa Platter",
+      "description": "Grilled Steak, Saut\u00e9ed Onion, Tomatoes & Jalape\u00f1o Peppers with Rice, Refried Beans & Tortillas",
+      "price": 20.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_carne_mexicana",
+      "category": "Grilled Platters",
+      "name": "Carne A La Mexicana Platter",
+      "description": "Grilled Steak, Saut\u00e9ed Onion, Tomatoes & Jalape\u00f1o Peppers with Rice, Refried Beans & Tortillas",
+      "price": 20.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_birria_chivo",
+      "category": "Grilled Platters",
+      "name": "Birria de Chivo Platter",
+      "description": "Goat birria with Rice, Refried Beans & Tortillas",
+      "price": 21.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_bean_cheese_burrito",
+      "category": "Kids' Menu",
+      "name": "Kids' Beans & Cheese Burrito",
+      "description": "Kids' burrito with beans and cheese",
+      "price": 4.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_bean_rice_burrito",
+      "category": "Kids' Menu",
+      "name": "Kids' Beans & Rice Burrito",
+      "description": "Kids' burrito with beans and rice",
+      "price": 4.19,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_bean_rice_cheese_burrito",
+      "category": "Kids' Menu",
+      "name": "Kids' Beans, Rice & Cheese Burrito",
+      "description": "Kids' burrito with beans, rice, and cheese",
+      "price": 4.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_combo_plain_quesadilla",
+      "category": "Kids' Menu",
+      "name": "Kids' Combo Plain Quesadilla",
+      "description": "Kids' plain quesadilla combo",
+      "price": 6.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_combo_meat_quesadilla",
+      "category": "Kids' Menu",
+      "name": "Kids' Combo Meat Quesadilla",
+      "description": "Kids' meat quesadilla combo",
+      "price": 7.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_cheese_quesadilla",
+      "category": "Kids' Menu",
+      "name": "Kids' Cheese Quesadilla",
+      "description": "Kids' small cheese quesadilla",
+      "price": 2.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "kids_meat_combo_plate",
+      "category": "Kids' Menu",
+      "name": "Kids' Meat Combo Plate",
+      "description": "Kids' meat combo plate",
+      "price": 9.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_french_fries",
+      "category": "Kids' Menu",
+      "name": "Side of French Fries",
+      "description": "Side of french fries",
+      "price": 5.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_spicy_shrimp",
+      "category": "Seafood",
+      "name": "Spicy Shrimp Platter",
+      "description": "Spicy shrimp with Rice, Refried Beans & Tortillas",
+      "price": 20.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_shrimp_garlic",
+      "category": "Seafood",
+      "name": "Shrimp With Garlic Platter",
+      "description": "Garlic shrimp with Rice, Refried Beans & Tortillas",
+      "price": 20.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_shrimp_rancheros",
+      "category": "Seafood",
+      "name": "Shrimp Rancheros Platter",
+      "description": "Shrimp rancheros with Rice, Refried Beans & Tortillas",
+      "price": 20.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_shrimp_fajitas",
+      "category": "Seafood",
+      "name": "Shrimp Fajitas Platter",
+      "description": "Shrimp fajitas with Rice, Refried Beans & Tortillas",
+      "price": 20.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "shrimp_cocktail_md",
+      "category": "Seafood",
+      "name": "Shrimp Cocktail (Medium)",
+      "description": "Medium shrimp cocktail",
+      "price": 17.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "shrimp_cocktail_lg",
+      "category": "Seafood",
+      "name": "Shrimp Cocktail (Large)",
+      "description": "Large shrimp cocktail",
+      "price": 20.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "platter_fish_fillet",
+      "category": "Seafood",
+      "name": "Fish Fillet Platter",
+      "description": "Fish fillet with Rice, Refried Beans & Tortillas",
+      "price": 20.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "bag_of_chips",
+      "category": "Sides",
+      "name": "Bag of Chips",
+      "description": "",
+      "price": 1.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "chips_salsa",
+      "category": "Sides",
+      "name": "Chips & Salsa",
+      "description": "",
+      "price": 3.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "chips_guacamole",
+      "category": "Sides",
+      "name": "Chips & Guacamole Sauce",
+      "description": "",
+      "price": 4.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "mexican_guacamole_chips",
+      "category": "Sides",
+      "name": "Mexican Guacamole & Chips",
+      "description": "",
+      "price": 8.99,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "mexican_guacamole",
+      "category": "Sides",
+      "name": "Mexican Guacamole",
+      "description": "",
+      "price": 7.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_rice_refried_beans",
+      "category": "Sides",
+      "name": "Side of Rice & Refried Beans",
+      "description": "",
+      "price": 6.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_rice_whole_beans",
+      "category": "Sides",
+      "name": "Side of Rice & Whole Beans",
+      "description": "",
+      "price": 6.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_refried_beans_16oz",
+      "category": "Sides",
+      "name": "Side of Refried Beans (16 oz)",
+      "description": "",
+      "price": 6.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_refried_beans_32oz",
+      "category": "Sides",
+      "name": "Side of Refried Beans (32 oz)",
+      "description": "",
+      "price": 13.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_whole_beans_16oz",
+      "category": "Sides",
+      "name": "Side of Whole Beans (16 oz)",
+      "description": "",
+      "price": 6.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_whole_beans_32oz",
+      "category": "Sides",
+      "name": "Side of Whole Beans (32 oz)",
+      "description": "",
+      "price": 13.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_rice_16oz",
+      "category": "Sides",
+      "name": "Side of Rice (16 oz)",
+      "description": "",
+      "price": 6.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_rice_32oz",
+      "category": "Sides",
+      "name": "Side of Rice (32 oz)",
+      "description": "",
+      "price": 13.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_green_sauce_4oz",
+      "category": "Sides",
+      "name": "Side Green Sauce (4 oz)",
+      "description": "",
+      "price": 2.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_green_sauce_16oz",
+      "category": "Sides",
+      "name": "Side Green Sauce (16 oz)",
+      "description": "",
+      "price": 8.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_green_sauce_20oz",
+      "category": "Sides",
+      "name": "Side Green Sauce (20 oz)",
+      "description": "",
+      "price": 11.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_green_sauce_32oz",
+      "category": "Sides",
+      "name": "Side Green Sauce (32 oz)",
+      "description": "",
+      "price": 16.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_red_sauce_4oz",
+      "category": "Sides",
+      "name": "Side Red Sauce (4 oz)",
+      "description": "",
+      "price": 2.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_red_sauce_16oz",
+      "category": "Sides",
+      "name": "Side Red Sauce (16 oz)",
+      "description": "",
+      "price": 8.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_red_sauce_20oz",
+      "category": "Sides",
+      "name": "Side Red Sauce (20 oz)",
+      "description": "",
+      "price": 11.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_red_sauce_32oz",
+      "category": "Sides",
+      "name": "Side Red Sauce (32 oz)",
+      "description": "",
+      "price": 16.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "habanero_sauce_1oz",
+      "category": "Sides",
+      "name": "Habanero Sauce (1 oz)",
+      "description": "",
+      "price": 1.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "habanero_sauce_4oz",
+      "category": "Sides",
+      "name": "Habanero Sauce (4 oz)",
+      "description": "",
+      "price": 4.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_salsa_fresca_4oz",
+      "category": "Sides",
+      "name": "Side of Salsa Fresca (4 oz)",
+      "description": "",
+      "price": 2.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_salsa_fresca_16oz",
+      "category": "Sides",
+      "name": "Side of Salsa Fresca (16 oz)",
+      "description": "",
+      "price": 8.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_salsa_fresca_20oz",
+      "category": "Sides",
+      "name": "Side of Salsa Fresca (20 oz)",
+      "description": "",
+      "price": 11.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_salsa_fresca_32oz",
+      "category": "Sides",
+      "name": "Side of Salsa Fresca (32 oz)",
+      "description": "",
+      "price": 16.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_guacamole_sauce",
+      "category": "Sides",
+      "name": "Side of Guacamole Sauce",
+      "description": "",
+      "price": 3.0,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_sour_cream_4oz",
+      "category": "Sides",
+      "name": "Side of Sour Cream (4 oz)",
+      "description": "",
+      "price": 1.5,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_enchilada_sauce_4oz",
+      "category": "Sides",
+      "name": "Side of Enchilada Sauce (4 oz)",
+      "description": "",
+      "price": 2.5,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_pico_de_gallo_4oz",
+      "category": "Sides",
+      "name": "Side of Pico De Gallo (4 oz)",
+      "description": "",
+      "price": 1.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "fresh_jalapeno",
+      "category": "Sides",
+      "name": "Fresh Jalape\u00f1o",
+      "description": "",
+      "price": 0.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "fried_jalapeno",
+      "category": "Sides",
+      "name": "Fried Jalape\u00f1o",
+      "description": "",
+      "price": 0.39,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_grilled_onions",
+      "category": "Sides",
+      "name": "Side of Grilled Onions",
+      "description": "",
+      "price": 1.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_avocado_half",
+      "category": "Sides",
+      "name": "Side of Avocado (Half)",
+      "description": "",
+      "price": 3.19,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_avocado_whole",
+      "category": "Sides",
+      "name": "Side of Avocado (Whole)",
+      "description": "",
+      "price": 5.49,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_jack_cheese_4oz",
+      "category": "Sides",
+      "name": "Side of Jack Cheese (4 oz)",
+      "description": "",
+      "price": 1.69,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_cotija_cheese_4oz",
+      "category": "Sides",
+      "name": "Side of Cotija Cheese (4 oz)",
+      "description": "",
+      "price": 1.89,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_tostada_shell",
+      "category": "Sides",
+      "name": "Side Tostada Shell (1)",
+      "description": "",
+      "price": 0.79,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_corn_tortillas_4",
+      "category": "Sides",
+      "name": "Side of Corn Tortillas (4)",
+      "description": "",
+      "price": 1.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    },
+    {
+      "id": "side_flour_tortillas_3",
+      "category": "Sides",
+      "name": "Side of Flour Tortillas (3)",
+      "description": "",
+      "price": 1.29,
+      "available": true,
+      "modifiers": [],
+      "combos": []
+    }
+  ]
+}
