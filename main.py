@@ -946,9 +946,12 @@ async def api_ingest_website_order(request: Request):
         f"Delivery to {body['deliveryAddress']}" if body.get("deliveryAddress") else "ASAP"
     )
 
-    # Map location string to restaurant_id
+    # Prefer an explicit restaurant_id from the caller. Falls back to the legacy
+    # Taqueria El Coral location-sniffing for older sites that never sent one.
     location = (body.get("location") or "").lower()
-    if "capitol" in location or "426" in location:
+    if body.get("restaurant_id"):
+        rid = body["restaurant_id"]
+    elif "capitol" in location or "426" in location:
         rid = "taqueria_el_coral_capitol_expy"
     else:
         rid = "taqueria_el_coral_santa_teresa"
