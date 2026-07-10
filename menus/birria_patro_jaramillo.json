@@ -1,0 +1,126 @@
+{
+  "restaurant_id": "birria_patro_jaramillo",
+  "restaurant_name": "Birria Patro Jaramillo — 3961 Snell Ave, Suite 2, San Jose, CA 95136",
+  "manager_phone": "6692489997",
+  "manager_email": "",
+  "twilio_phone": "+19066755606",
+  "timezone": "America/Los_Angeles",
+  "hours": {
+    "monday":    { "open": "09:00", "close": "16:00" },
+    "tuesday":   { "open": "09:00", "close": "19:50" },
+    "wednesday": { "open": "09:00", "close": "19:50" },
+    "thursday":  { "open": "09:00", "close": "19:50" },
+    "friday":    { "open": "09:00", "close": "19:50" },
+    "saturday":  { "open": "08:30", "close": "19:50" },
+    "sunday":    { "open": "08:30", "close": "19:50" }
+  },
+  "prep_time_estimate_minutes": 15,
+  "catering_threshold": { "min_dollars": 150 },
+  "menu": [
+    { "id": "birria_taco_dorado_combo_revolcada", "category": "Birria Tacos", "name": "Birria Taco Dorado Combo Revolcada (3)", "description": "3 grilled birria tacos with charred onions, cheese, cilantro, salsa. Includes 8oz consomé.", "price": 17.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "birria_tacos_dorados_combo_normal", "category": "Birria Tacos", "name": "Birria Tacos Dorados Combo Normal (3)", "description": "3 classic birria tacos with cheese, onion, cilantro, salsa. Includes 8oz consomé.", "price": 17.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "tacos_dorados_carne_asada", "category": "Birria Tacos", "name": "Tacos Dorados Carne Asada (3)", "description": "3 crispy carne asada tacos with cheese, onion, cilantro, salsa. Tortillas dipped in lamb lard.", "price": 18.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "taco_suave", "category": "Birria Tacos", "name": "Taco Suave / Soft Taco", "description": "Choice of meat, onions, cilantro, salsa.", "price": 4.49, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "taco_crispy", "category": "Birria Tacos", "name": "Taco Crispy / Crispy Taco", "description": "Choice of meat, onions, cilantro, salsa, in a crispy shell.", "price": 4.49, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "plato_birria_normal", "category": "Birria Plates", "name": "Plato Birria Normal / Normal Birria Plate", "description": "Steamed birria plate. Includes 12oz consomé, 5 tortillas, onions, cilantro.", "price": 17.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "plato_birria_revolcada", "category": "Birria Plates", "name": "Plato Birria Revolcada / Grilled Lamb Plate", "description": "Grilled birria plate with charred onions. Includes 12oz consomé, 5 tortillas, onions, cilantro.", "price": 17.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "libra_normal", "category": "Birria Plates", "name": "Libra Normal (1lb) / Normal Pound", "description": "1 lb steamed birria. Includes 32oz consomé, 10 tortillas, onions, cilantro on the side.", "price": 31.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "libra_revolcada", "category": "Birria Plates", "name": "Libra Revolcada / Grilled Lamb Per Pound", "description": "1 lb grilled birria with charred onions. Includes 32oz broth, 10 tortillas.", "price": 34.49, "available": true, "modifiers": [], "combos": [] },
+    { "id": "consome_small", "category": "Birria Plates", "name": "Consomé (Small)", "description": "Rich birria broth, served hot.", "price": 6.49, "available": true, "modifiers": [], "combos": [] },
+    { "id": "consome_large", "category": "Birria Plates", "name": "Consomé (Large, 32oz)", "description": "More broth than meat, plus rice and 4 tortillas.", "price": 17.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "super_burrito", "category": "Burritos", "name": "Super Burrito / Super Burrito", "description": "Choice of meat, rice, whole beans, guacamole, cheese, sour cream, pico de gallo.", "price": 14.49, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "burrito_regular", "category": "Burritos", "name": "Burrito Regular / Regular Burrito", "description": "Choice of meat, rice, whole beans, onions, cilantro, salsa.", "price": 12.99, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "burrito_vegetariano", "category": "Burritos", "name": "Burrito Vegetariano / Vegetarian Burrito", "description": "Rice, whole beans, sour cream, cheese, guacamole, lettuce, pico de gallo.", "price": 11.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "quesabirria", "category": "Quesadillas", "name": "Quesabirria (3)", "description": "3 birria quesadillas, melted cheese, served with consomé for dipping.", "price": 14.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "quesadilla_regular", "category": "Quesadillas", "name": "Quesadilla Regular", "description": "Choice of meat, cheese, onions, cilantro, salsa.", "price": 10.99, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "tostada", "category": "Tostadas", "name": "Tostada", "description": "Choice of meat, beans, cheese, crema, lettuce, pico de gallo, avocado.", "price": 6.49, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "nachos", "category": "Nachos", "name": "Nachos", "description": "Crispy tortilla chips loaded with cheese, choice of meat, and all the fixings.", "price": 13.99, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "nachos_fries", "category": "Nachos", "name": "Nachos Fries / Fries Nachos", "description": "Crispy fries loaded with cheese, choice of meat, and all the fixings.", "price": 14.99, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "ceviche_de_camaron", "category": "Mariscos", "name": "Ceviche de Camarón / Shrimp Ceviche", "description": "Fresh shrimp ceviche, citrus-cured with pico de gallo.", "price": 6.49, "available": true, "modifiers": [], "combos": [] },
+    { "id": "shrimp_burrito", "category": "Mariscos", "name": "Shrimp Burrito", "description": "Flour coated deep fried shrimp, red cabbage, pico de gallo, cucumber, house dressing, whole beans, rice, cheese, avocado.", "price": 14.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "huevos_con_chorizo", "category": "Breakfast", "name": "Huevos con Chorizo / Eggs & Chorizo", "description": "Served with rice, beans, chorizo, tortillas, and eggs.", "price": 10.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "desayuno_con_huevos", "category": "Breakfast", "name": "Desayuno con Huevos / Breakfast with Eggs", "description": "Served with 2 eggs, rice, and beans.", "price": 9.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "menudo", "category": "Menudo", "name": "Menudo", "description": "Traditional Mexican soup made with cow's stomach in broth with red chili pepper base. Weekends only.", "price": 17.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "full_patro_experience", "category": "Especiales", "name": "The Full Patro Experience (Party Pack)", "description": "4 handmade tortillas, birria normal, birria revolcada, flour quesadilla, 3 quesabirrias with cheese, 2 medium consomés. PRICE PENDING — manager has not confirmed yet.", "price": 0.0, "available": false, "modifiers": [], "combos": [] },
+    { "id": "birria_pizza", "category": "Especiales", "name": "Birria Pizza", "description": "6 generous slices, perfect for two. Comes with 2 small consomés for dipping, onion, cilantro, fresh limes. PRICE PENDING — manager has not confirmed yet.", "price": 0.0, "available": false, "modifiers": [], "combos": [] },
+    { "id": "arroz", "category": "Sides", "name": "Arroz / Rice", "description": "Mexican-style rice.", "price": 3.49, "available": true, "modifiers": [], "combos": [] },
+    { "id": "frijoles", "category": "Sides", "name": "Frijoles / Beans", "description": "Whole or refried beans.", "price": 3.49, "available": true, "modifiers": [], "combos": [] },
+    { "id": "guacamole", "category": "Sides", "name": "Guacamole", "description": "Fresh house-made guacamole.", "price": 3.49, "available": true, "modifiers": [], "combos": [] },
+    { "id": "chips_y_salsa", "category": "Sides", "name": "Chips y Salsa", "description": "Crispy tortilla chips with fresh salsa. PRICE PENDING — manager has not confirmed yet.", "price": 0.0, "available": false, "modifiers": [], "combos": [] },
+    { "id": "extra_consome_8oz", "category": "Sides", "name": "Extra Consomé 8oz", "description": "Extra cup of rich birria broth.", "price": 1.5, "available": true, "modifiers": [], "combos": [] },
+    { "id": "extra_tortillas_5", "category": "Sides", "name": "Extra Tortillas (5)", "description": "5 additional tortillas.", "price": 2.0, "available": true, "modifiers": [], "combos": [] },
+    { "id": "avocado", "category": "Sides", "name": "Avocado", "description": "Fresh sliced avocado.", "price": 1.0, "available": true, "modifiers": [], "combos": [] },
+    { "id": "kids_bean_cheese_burrito", "category": "Kids", "name": "Kids Bean and Cheese Burrito", "description": "Bean and cheese burrito, comes with fries.", "price": 7.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "kids_taco", "category": "Kids", "name": "Kids Taco", "description": "Choice of meat, simple and mild.", "price": 4.49, "available": true, "modifiers": [
+        { "name": "Birria (Lamb)", "price_delta": 0.0 },
+        { "name": "Carne Asada", "price_delta": 0.0 },
+        { "name": "Carnitas", "price_delta": 0.0 },
+        { "name": "Cabeza", "price_delta": 0.0 },
+        { "name": "Chorizo", "price_delta": 0.0 },
+        { "name": "Shrimp", "price_delta": 0.0 }
+      ], "combos": [] },
+    { "id": "kids_quesadilla", "category": "Kids", "name": "Kids Quesadilla", "description": "Melted cheese quesadilla.", "price": 5.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "flan", "category": "Dessert", "name": "Flan", "description": "Rich, creamy flan — customers say it tastes \"almost like crème brûlée.\"", "price": 4.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "horchata_grande", "category": "Drinks", "name": "Horchata Grande / Large Horchata", "description": "House-made horchata, large size.", "price": 5.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "horchata_regular", "category": "Drinks", "name": "Horchata Regular", "description": "House-made horchata, regular size.", "price": 3.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "agua_fresca", "category": "Drinks", "name": "Agua Fresca", "description": "Refreshing fruit water, ask for today's flavor.", "price": 3.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "jarritos", "category": "Drinks", "name": "Jarritos", "description": "Assorted flavors, Mexican bottled soda.", "price": 2.99, "available": true, "modifiers": [], "combos": [] },
+    { "id": "bottled_water", "category": "Drinks", "name": "Bottled Water", "description": "", "price": 1.5, "available": true, "modifiers": [], "combos": [] }
+  ]
+}
