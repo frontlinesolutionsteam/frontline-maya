@@ -63,6 +63,7 @@ async def init_db():
                     stripe_payment_intent_id TEXT DEFAULT '',
                     stripe_checkout_session_id TEXT DEFAULT '',
                     source               TEXT DEFAULT 'voice',
+                    kitchen_received_at  TEXT DEFAULT '',
                     updated_at           TEXT
                 );
 
@@ -106,6 +107,7 @@ async def init_db():
                 ("stripe_checkout_session_id","TEXT DEFAULT ''"),
                 ("source",                  "TEXT DEFAULT 'voice'"),
                 ("payment_reference_id",    "TEXT DEFAULT ''"),
+                ("kitchen_received_at",     "TEXT DEFAULT ''"),
             ]:
                 try:
                     await db.execute(f"ALTER TABLE orders ADD COLUMN {col} {col_def}")
@@ -113,6 +115,18 @@ async def init_db():
                     logger.info(f"DB migration: added orders.{col}")
                 except Exception:
                     pass  # Column already exists
+
+            # Backfill kitchen_received_at for pre-existing rows. Every current
+            # ingest path delivers to the kitchen on receipt, so creation time is
+            # the correct proxy. New rows set it explicitly in save_order().
+            try:
+                await db.execute(
+                    "UPDATE orders SET kitchen_received_at = timestamp "
+                    "WHERE kitchen_received_at IS NULL OR kitchen_received_at = ''"
+                )
+                await db.commit()
+            except Exception:
+                pass
 
         _db_initialized = True
         logger.info(f"SQLite DB initialized at {DB_PATH}")
@@ -129,8 +143,8 @@ async def save_order(order: dict) -> str:
             (order_id, restaurant_id, timestamp, customer_name, customer_phone,
              pickup_time, order_type, items_json, subtotal, estimated_prep_minutes,
              special_instructions, status, call_sid, call_duration_seconds, source,
-             payment_method, payment_status, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             payment_method, payment_status, kitchen_received_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             order.get("order_id", ""),
             order.get("restaurant_id", ""),
@@ -149,6 +163,9 @@ async def save_order(order: dict) -> str:
             order.get("source", "voice"),
             order.get("payment_method", ""),
             order.get("payment_status", "unpaid"),
+            # Kitchen received the ticket when it was ingested — default to the
+            # order timestamp. (Held scheduled orders will set this at surface time.)
+            order.get("kitchen_received_at") or order.get("timestamp", datetime.utcnow().isoformat()),
             datetime.utcnow().isoformat(),
         ))
         await db.commit()

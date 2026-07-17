@@ -122,6 +122,7 @@
   </main>
 </section>
 
+<script src="/dashboard/due-time.js"></script>
 <script>
   // ══════════════ State ══════════════
   let allOrders = [];
@@ -178,53 +179,42 @@
   function custName(o) { return (o.customer && o.customer.name) || o.customer_name || '—'; }
   function custPickup(o) { return (o.customer && o.customer.pickup_time) || o.pickup_time || 'ASAP'; }
 
-  // Unified due-time: lets ASAP orders (due = placed + prep time) and orders with a
-  // specific pickup time sort on the same axis, so "treat ASAP as urgent" falls out
-  // naturally — an ASAP order due in 4 minutes outranks a pickup scheduled in 2 hours.
-  function computeDueTime(o) {
-    const orderTime = o.timestamp ? new Date(o.timestamp) : new Date();
-    const prepMs = (o.estimated_prep_minutes || 10) * 60000;
-    const pickup = (custPickup(o) || '').trim();
-
-    if (!pickup || /^asap$/i.test(pickup)) {
-      return new Date(orderTime.getTime() + prepMs);
-    }
-    // ISO8601 (e.g. "2026-07-09T18:00:00")
-    if (/\d{4}-\d{2}-\d{2}/.test(pickup)) {
-      const iso = new Date(pickup);
-      if (!isNaN(iso)) return iso;
-    }
-    // "6:00 PM" / "18:00" style — apply to the order's own date
-    const m = pickup.match(/(\d{1,2}):(\d{2})\s*(AM|PM|am|pm)?/);
-    if (m) {
-      let hours = parseInt(m[1], 10);
-      const minutes = parseInt(m[2], 10);
-      const ampm = m[3] ? m[3].toUpperCase() : null;
-      if (ampm === 'PM' && hours !== 12) hours += 12;
-      if (ampm === 'AM' && hours === 12) hours = 0;
-      const due = new Date(orderTime);
-      due.setHours(hours, minutes, 0, 0);
-      if (due.getTime() < orderTime.getTime() - 6 * 3600000) due.setDate(due.getDate() + 1);
-      return due;
-    }
-    // Unparseable free text (e.g. "Delivery to 123 Main St") — fall back to ASAP-style
-    return new Date(orderTime.getTime() + prepMs);
+  // Adapt a raw order (WS/DB shape) to the pure due-time module's input shape.
+  // kitchen_received_at falls back to timestamp for orders created before that
+  // column existed, and for the live 'new_order' broadcast which sends the
+  // in-memory dict (received == created for every current ingest path).
+  function toDueOrder(o) {
+    return {
+      orderId:          o.order_id,
+      prepMinutes:      o.estimated_prep_minutes || 10,
+      pickupTime:       custPickup(o),
+      orderTimestamp:   o.timestamp,
+      kitchenReceivedAt: o.kitchen_received_at || o.timestamp,
+    };
   }
 
-  function urgencyInfo(dueTime) {
-    const diffMin = Math.round((dueTime - new Date()) / 60000);
-    if (diffMin < 0) return { level: 'overdue', label: `OVERDUE ${Math.abs(diffMin)}m` };
-    if (diffMin <= NEAR_DUE_MINUTES) return { level: 'near', label: diffMin === 0 ? 'Due now' : `Due in ${diffMin}m` };
-    if (diffMin < 90) return { level: 'ok', label: `Due in ${diffMin}m` };
-    return { level: 'ok', label: `Pickup ${dueTime.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}` };
+  // Badge + urgency level for a card, driven entirely by the tested module.
+  // The late side is the module's job (Late m:ss / Late 1h 04m / Late —).
+  // The not-yet-late side stays a simple "Due in Xm" until item 5's countdown.
+  function dueBadge(o) {
+    const d = toDueOrder(o);
+    const now = Date.now();
+    const badge = DueTime.formatDueBadge(d, now);
+    if (badge.level === 'late' || badge.level === 'unknown') {
+      return { level: 'overdue', label: badge.text };
+    }
+    const due = DueTime.computeDueAt(d);
+    if (due == null) return { level: 'ok', label: '' };
+    const diffMin = Math.round((due - now) / 60000);
+    if (diffMin <= NEAR_DUE_MINUTES) return { level: 'near', label: diffMin <= 0 ? 'Due now' : `Due in ${diffMin}m` };
+    return { level: 'ok', label: `Due in ${diffMin}m` };
   }
 
   function buildCard(o, opts) {
     const items = parseItems(o);
     const paid = isPaid(o);
     const pickup = custPickup(o);
-    const due = opts.dueTime;
-    const urgency = opts.showDue ? urgencyInfo(due) : null;
+    const urgency = opts.showDue ? dueBadge(o) : null;
 
     const itemsHtml = items.length ? items.map(i => `
       <div class="kds-item">
@@ -266,18 +256,22 @@
 
   // ══════════════ In Progress — paid AND unpaid, sorted by unified due time ══════════════
   function renderProgress() {
+    const now = Date.now();
     const list = allOrders.filter(o =>
       (o.status || 'confirmed') !== 'picked_up' &&
       (o.status || '') !== 'cancelled' &&
-      parseItems(o).length > 0
+      parseItems(o).length > 0 &&
+      // Scheduled orders are held off the kitchen screen until pickup − prep.
+      // Staff view still shows them the whole time.
+      DueTime.getSurfaceState(toDueOrder(o), now) === 'active'
     );
-    const withDue = list.map(o => ({ o, due: computeDueTime(o) }));
+    const withDue = list.map(o => ({ o, due: DueTime.computeDueAt(toDueOrder(o)) ?? Infinity }));
     withDue.sort((a, b) => a.due - b.due);
 
     document.getElementById('progress-count').innerHTML = `<strong>${list.length}</strong> in progress`;
     const grid = document.getElementById('progress-grid');
     grid.innerHTML = withDue.length
-      ? withDue.map(({ o, due }) => buildCard(o, { showDue: true, dueTime: due })).join('')
+      ? withDue.map(({ o }) => buildCard(o, { showDue: true })).join('')
       : `<div class="empty-state"><div class="icon">🍳</div><h3>All caught up — no orders in progress</h3></div>`;
   }
 

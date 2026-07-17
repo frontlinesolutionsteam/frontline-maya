@@ -1545,6 +1545,16 @@ async def kds_page(key: str = ""):
     return HTMLResponse("<h1>Kitchen Display</h1><p>kds.html not found.</p>")
 
 
+@app.get("/dashboard/due-time.js")
+async def due_time_module():
+    """Serve the KDS clock module (shared by kds.html and its node tests). No auth —
+    it's static logic with no data. Served from source so there is one canonical copy."""
+    path = Path(__file__).parent / "dashboard" / "due-time.js"
+    if path.exists():
+        return HTMLResponse(path.read_text(), media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="due-time.js not found")
+
+
 @app.get("/order", response_class=HTMLResponse)
 async def order_page():
     """Customer-facing online order form — no auth, no chatbot."""
