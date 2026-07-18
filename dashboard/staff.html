@@ -243,6 +243,8 @@
       <div class="register-cart">
         <h3>Walk-In Order</h3>
         <div class="field"><label>Customer name (optional)</label><input id="reg-name" placeholder="Walk-in"></div>
+        <div class="field"><label>⚠️ Allergy (goes to the kitchen in red)</label><input id="reg-allergy" placeholder="e.g. PEANUTS"></div>
+        <div class="field"><label>Notes (no onions, extra spicy…)</label><input id="reg-notes" placeholder="Optional"></div>
         <div id="cart-list-register" class="cart-list"><div class="cart-empty">No items yet — tap a menu item to add it.</div></div>
         <div class="cart-total"><span>Total</span><strong id="cart-total-register">$0.00</strong></div>
         <button class="place-btn" id="reg-place-btn" onclick="placeAndPayRegisterOrder()" disabled>Charge &amp; Place Order</button>
@@ -641,7 +643,9 @@
     try {
       const res = await fetch(`/api/orders/manual${DASH_KEY ? '?key='+encodeURIComponent(DASH_KEY):''}`, {
         method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ source: 'in_person', restaurant_id: RESTAURANT_ID, customer, items: cart }),
+        body: JSON.stringify({ source: 'in_person', restaurant_id: RESTAURANT_ID, customer, items: cart,
+          allergy: document.getElementById('reg-allergy').value.trim(),
+          special_instructions: document.getElementById('reg-notes').value.trim() }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || 'Failed to place order');
@@ -649,6 +653,8 @@
       cart = [];
       renderCart();
       document.getElementById('reg-name').value = '';
+      document.getElementById('reg-allergy').value = '';
+      document.getElementById('reg-notes').value = '';
       openSquareCheckout(data.order_id, data.order.subtotal);
     } catch(e) {
       alert('Failed to place order: ' + e.message);

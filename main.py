@@ -74,13 +74,17 @@ from execution.audio_pipeline import (
     try_synthesize, transcribe_audio, prewarm_audio_cache, TMP_DIR as AUDIO_TMP,
     get_polly_voice, get_twilio_language,
 )
-from execution.delivery import deliver_order, dashboard_clients, broadcast_status_update, broadcast_payment_update
+from execution.delivery import (
+    deliver_order, dashboard_clients, broadcast_status_update,
+    broadcast_payment_update, broadcast_items_checked,
+)
 from execution.menu_parser import (
     parse_and_validate, save_menu, load_menu, load_all_menus, get_cached_menus,
     is_restaurant_open, get_hours_text,
 )
 from execution.order_store import (
     init_db, get_orders, get_order, update_order_status, update_order_payment,
+    update_items_checked,
 )
 from execution.payments import (
     charge_terminal, create_payment_link, send_payment_sms,
@@ -907,6 +911,25 @@ async def api_update_status(order_id: str, request: Request):
     return {"status": "ok", "order_id": order_id, "new_status": status}
 
 
+@app.patch("/api/orders/{order_id}/items-checked")
+async def api_update_items_checked(order_id: str, request: Request):
+    """
+    Persist which physical item rows the kitchen has plated (KDS item 7).
+    Body: {"checked": [0, 2]}. Stored server-side so the state survives a
+    refresh and syncs across multiple kitchen tablets.
+    """
+    body = await request.json()
+    checked = body.get("checked", [])
+    if not isinstance(checked, list):
+        raise HTTPException(status_code=400, detail="checked must be a list of row indexes")
+    checked = sorted({int(i) for i in checked if isinstance(i, (int, float))})
+    ok = await update_items_checked(order_id, checked)
+    if not ok:
+        raise HTTPException(status_code=404, detail="Order not found")
+    asyncio.create_task(broadcast_items_checked(order_id, checked))
+    return {"status": "ok", "order_id": order_id, "checked": checked}
+
+
 @app.post("/api/orders/website")
 async def api_ingest_website_order(request: Request):
     """
@@ -970,6 +993,7 @@ async def api_ingest_website_order(request: Request):
         "subtotal":               float(body.get("total", body.get("subtotal", 0))),
         "estimated_prep_minutes": PREP_TIME,
         "special_instructions":   body.get("notes", ""),
+        "allergy":                body.get("allergy", ""),
         "status":                 "confirmed",
         "call_sid":               "",
         "call_duration_seconds":  0,
@@ -1017,6 +1041,7 @@ async def api_ingest_order(request: Request):
         "subtotal":               float(body.get("subtotal", 0)),
         "estimated_prep_minutes": int(body.get("estimated_prep_minutes", PREP_TIME)),
         "special_instructions":   body.get("special_instructions", ""),
+        "allergy":                body.get("allergy", ""),
         "status":                 body.get("status", "confirmed"),
         "call_sid":               "",
         "call_duration_seconds":  0,
@@ -1065,6 +1090,7 @@ async def api_create_manual_order(request: Request, key: str = ""):
         "subtotal":               subtotal,
         "estimated_prep_minutes": int(body.get("estimated_prep_minutes", PREP_TIME)),
         "special_instructions":   body.get("special_instructions", ""),
+        "allergy":                body.get("allergy", ""),
         "status":                 "confirmed",
         "call_sid":               "",
         "call_duration_seconds":  0,
@@ -1607,6 +1633,7 @@ async def _submit_order(state: dict, config: dict, status: str):
             "subtotal":               state.get("subtotal", 0.0),
             "estimated_prep_minutes": config.get("prep_time_estimate_minutes", PREP_TIME),
             "special_instructions":   state.get("special_instructions", ""),
+            "allergy":                state.get("allergy", ""),
             "status":                 status,
             "call_sid":               call_sid,
             "call_duration_seconds":  duration,

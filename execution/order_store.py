@@ -65,6 +65,8 @@ async def init_db():
                     source               TEXT DEFAULT 'voice',
                     kitchen_received_at  TEXT DEFAULT '',
                     ticket_number        INTEGER DEFAULT 0,
+                    allergy              TEXT DEFAULT '',
+                    items_checked_json   TEXT DEFAULT '[]',
                     updated_at           TEXT
                 );
 
@@ -110,6 +112,8 @@ async def init_db():
                 ("payment_reference_id",    "TEXT DEFAULT ''"),
                 ("kitchen_received_at",     "TEXT DEFAULT ''"),
                 ("ticket_number",           "INTEGER DEFAULT 0"),
+                ("allergy",                 "TEXT DEFAULT ''"),
+                ("items_checked_json",      "TEXT DEFAULT '[]'"),
             ]:
                 try:
                     await db.execute(f"ALTER TABLE orders ADD COLUMN {col} {col_def}")
@@ -230,8 +234,9 @@ async def save_order(order: dict) -> str:
             (order_id, restaurant_id, timestamp, customer_name, customer_phone,
              pickup_time, order_type, items_json, subtotal, estimated_prep_minutes,
              special_instructions, status, call_sid, call_duration_seconds, source,
-             payment_method, payment_status, kitchen_received_at, ticket_number, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             payment_method, payment_status, kitchen_received_at, ticket_number,
+             allergy, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             order.get("order_id", ""),
             order.get("restaurant_id", ""),
@@ -254,6 +259,7 @@ async def save_order(order: dict) -> str:
             # order timestamp. (Held scheduled orders will set this at surface time.)
             order.get("kitchen_received_at") or order.get("timestamp", datetime.utcnow().isoformat()),
             int(order.get("ticket_number", 0)),
+            order.get("allergy", ""),
             datetime.utcnow().isoformat(),
         ))
         await db.commit()
@@ -295,6 +301,21 @@ async def update_order_payment(
              stripe_payment_intent_id, stripe_checkout_session_id,
              payment_reference_id,
              datetime.utcnow().isoformat(), order_id),
+        )
+        await db.commit()
+        return cursor.rowcount > 0
+
+
+async def update_items_checked(order_id: str, checked: list) -> bool:
+    """
+    Persist which physical item rows a cook has plated (item 7). Stored server-side
+    so the state survives a refresh and syncs across multiple kitchen tablets.
+    """
+    await init_db()
+    async with _get_db() as db:
+        cursor = await db.execute(
+            "UPDATE orders SET items_checked_json=?, updated_at=? WHERE order_id=?",
+            (json.dumps(checked), datetime.utcnow().isoformat(), order_id),
         )
         await db.commit()
         return cursor.rowcount > 0

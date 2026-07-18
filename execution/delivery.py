@@ -162,6 +162,20 @@ async def broadcast_payment_update(order_id: str, payment_status: str, payment_m
     dashboard_clients.difference_update(dead)
 
 
+async def broadcast_items_checked(order_id: str, checked: list):
+    """Sync plated-item checkboxes to every connected kitchen tablet."""
+    if not dashboard_clients:
+        return
+    message = json.dumps({"event": "items_checked", "order_id": order_id, "checked": checked})
+    dead = set()
+    for ws in list(dashboard_clients):
+        try:
+            await ws.send_text(message)
+        except Exception:
+            dead.add(ws)
+    dashboard_clients.difference_update(dead)
+
+
 async def broadcast_status_update(order_id: str, status: str):
     """Notify dashboard clients of a status change."""
     if not dashboard_clients:

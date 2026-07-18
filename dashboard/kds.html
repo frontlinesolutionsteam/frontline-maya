@@ -24,10 +24,15 @@
   body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
   /* ── Header / Top Nav ── */
+  /* Rush mode (item 10): ambient only — no sound, no toast, no modal.
+     It exists so a manager walking past can read the state. */
+  header.rush { background: #4a3005; border-bottom-color: var(--yellow); }
+  header.rush .count-badge { color: var(--yellow); }
+  header.rush .count-badge strong { color: #ffd98a; }
   header {
     background: var(--surface); border-bottom: 1px solid var(--border);
     padding: 0 24px; display: flex; align-items: center; justify-content: space-between;
-    height: 64px; position: sticky; top: 0; z-index: 200; gap: 20px;
+    height: 64px; position: sticky; top: 0; z-index: 200; gap: 20px; transition: background .3s;
   }
   .logo { display: flex; align-items: center; gap: 10px; font-size: 1.4rem; font-weight: 800; letter-spacing: -.5px; flex-shrink: 0; }
   .logo-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
@@ -109,11 +114,37 @@
   .kds-notes { margin-top:10px; padding:10px 12px; background:rgba(240,165,0,.1); border:1px solid rgba(240,165,0,.3); border-radius:8px; font-size:1rem; color:var(--yellow); font-weight:600; }
   .kds-empty-items { color:var(--muted); font-size:1rem; font-style:italic; }
 
-  .kds-foot { padding:16px 20px 20px; }
-  .complete-btn { width:100%; padding:16px; border-radius:10px; border:none; background:var(--green); color:#06281c; font-weight:800; font-size:1.15rem; cursor:pointer; letter-spacing:.3px; }
-  .complete-btn:hover { opacity:.9; }
-  .undo-btn { width:100%; margin-top:8px; padding:9px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--muted); font-weight:600; font-size:.85rem; cursor:pointer; }
-  .undo-btn:hover { color:var(--text); border-color:var(--text); }
+  /* ── Allergy + notes (item 6) — never truncated, never behind a tap ── */
+  .kds-alert { margin-bottom:12px; padding:11px 13px; border-radius:8px; font-size:1.05rem; font-weight:700; line-height:1.35; word-break:break-word; }
+  .kds-allergy { background:rgba(240,165,0,.14); border:2px solid var(--yellow); color:#ffd98a; }
+  .kds-allergy .alert-chip { display:inline-block; background:var(--yellow); color:#2a1c00; font-size:.72rem; font-weight:900;
+    letter-spacing:1.2px; padding:3px 9px; border-radius:5px; margin-right:9px; vertical-align:middle; }
+  .kds-note { background:rgba(240,165,0,.07); border:1px solid rgba(240,165,0,.45); color:#f5d78e; }
+
+  /* ── Per-item checkboxes (item 7) ── */
+  .kds-item.checkable { display:flex; align-items:flex-start; gap:12px; cursor:pointer; }
+  .kds-check { width:22px; height:22px; flex-shrink:0; margin-top:2px; border:2px solid var(--muted); border-radius:5px;
+    display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:900; color:transparent; }
+  .kds-item.checked .kds-check { background:var(--green); border-color:var(--green); color:#06281c; }
+  .kds-item.checked .kds-item-name, .kds-item.checked .kds-item-mods { text-decoration:line-through; opacity:.45; }
+  .plated-count { font-family: ui-monospace, Menlo, monospace; font-size:.8rem; color:var(--muted); letter-spacing:1px; margin-top:10px; }
+
+  /* ── Complete tap zone (item 8) — whole bottom zone is the target ── */
+  .kds-foot { padding:0; }
+  .complete-zone { width:100%; min-height:64px; padding:14px 20px; border:none; background:var(--green); color:#06281c;
+    cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+    border-radius:0 0 12px 12px; transition:filter .1s, transform .1s; }
+  .complete-zone:active { filter:brightness(.88); transform:scale(.995); }
+  .complete-zone .cz-label { font-weight:800; font-size:1.15rem; letter-spacing:.3px; }
+  .complete-zone .cz-hint { font-family: ui-monospace, Menlo, monospace; font-size:.66rem; letter-spacing:1.2px; opacity:.62; }
+  .complete-zone:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; }
+  .complete-zone:disabled:active { filter:none; transform:none; }
+
+  /* ── Undo (item 9) ── */
+  .undo-btn { width:100%; padding:12px; border-radius:0 0 12px 12px; border:none; border-top:1px solid var(--border);
+    background:transparent; color:var(--muted); font-weight:600; font-size:.85rem; cursor:pointer; }
+  .undo-btn:hover { color:var(--text); }
+  .undo-btn.loud { background:var(--yellow); color:#2a1c00; font-weight:800; font-size:1rem; border-top:none; }
 
   .empty-state { text-align:center; padding:80px 20px; color:var(--muted); grid-column:1/-1; }
   .empty-state .icon { font-size:3.2rem; margin-bottom:14px; }
@@ -161,6 +192,10 @@
   let lastTouchAt = 0;
   const REORDER_INTERVAL_MS = 10000; // batch clock-driven reorders
   const TOUCH_GRACE_MS = 3000;       // never move a card someone just touched
+  const UNDO_WINDOW_MS = 30000;      // loud-undo window after completion
+  const RUSH_ON = 6;                 // rise into rush mode at this many in progress
+  const RUSH_OFF = 4;                // ...and fall out here (hysteresis)
+  let rushMode = false;
   const REDUCED_MOTION = window.matchMedia
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -198,6 +233,14 @@
       } else if (msg.event === 'payment_update') {
         const o = allOrders.find(x => x.order_id === msg.order_id);
         if (o) { o.payment_status = msg.payment_status; o.payment_method = msg.payment_method; renderAll(); }
+      } else if (msg.event === 'items_checked') {
+        // Another tablet plated a row — mirror it here.
+        const o = allOrders.find(x => x.order_id === msg.order_id);
+        if (o) {
+          o.items_checked = msg.checked;
+          o.items_checked_json = JSON.stringify(msg.checked);
+          renderProgress();
+        }
       }
     };
   }
@@ -208,6 +251,36 @@
   function parseItems(o) {
     try { return Array.isArray(o.items) ? o.items : JSON.parse(o.items_json || '[]'); } catch(e) { return []; }
   }
+  /*
+   * Expand an order's items into individual PHYSICAL rows a cook can plate.
+   * "2× Taco" -> two rows. A trailing bare "(3)" in the name (e.g. "Quesabirria (3)")
+   * means three physical pieces, so it expands too — but only for a bare integer,
+   * never "(Large, 32oz)" or "(1lb)".
+   */
+  function physicalRows(o) {
+    const rows = [];
+    for (const it of parseItems(o)) {
+      const qty = Math.max(1, parseInt(it.quantity, 10) || 1);
+      const name = it.name || '';
+      const m = name.match(/\((\d+)\)\s*$/);
+      const perUnit = m && +m[1] >= 2 && +m[1] <= 12 ? +m[1] : 1;
+      const mods = (it.modifiers || []).filter(Boolean).join(' · ');
+      for (let u = 0; u < qty; u++) {
+        for (let p = 0; p < perUnit; p++) {
+          rows.push({ name: perUnit > 1 ? `${name} — ${p + 1} of ${perUnit}` : name, mods });
+        }
+      }
+    }
+    return rows;
+  }
+
+  function checkedRows(o) {
+    try {
+      const v = Array.isArray(o.items_checked) ? o.items_checked : JSON.parse(o.items_checked_json || '[]');
+      return new Set(v.map(Number));
+    } catch (e) { return new Set(); }
+  }
+
   function ticketLabel(o) { const n = Number(o.ticket_number || 0); return n > 0 ? '#' + String(n).padStart(3, '0') : ''; }
   function sourceLabel(s) { return {website:'Website', chatbot:'Chatbot', voice:'Voice', phone:'Phone', in_person:'In-Person'}[s] || (s||'Unknown'); }
   function custName(o) { return (o.customer && o.customer.name) || o.customer_name || '—'; }
@@ -234,11 +307,41 @@
     const chip = opts.showDue ? DueTime.getChipState(toDueOrder(o), now) : null;
     const age = DueTime.ageMinutes(toDueOrder(o), now);
 
-    const itemsHtml = items.length ? items.map(i => `
-      <div class="kds-item">
-        <div class="kds-item-name">${i.quantity||1}× ${i.name||''}</div>
-        ${i.modifiers && i.modifiers.length ? `<div class="kds-item-mods">${i.modifiers.join(' · ')}</div>` : ''}
-      </div>`).join('') : `<div class="kds-empty-items">No items — full order via callback</div>`;
+    // Item 7: single-item orders skip checkboxes entirely — don't add a tap to
+    // the common case to serve the uncommon one.
+    const rows = physicalRows(o);
+    const multi = opts.showDue && rows.length > 1;
+    const checked = checkedRows(o);
+    const allChecked = !multi || rows.every((_, i) => checked.has(i));
+
+    let itemsHtml;
+    if (!rows.length) {
+      itemsHtml = `<div class="kds-empty-items">No items — full order via callback</div>`;
+    } else if (multi) {
+      itemsHtml = rows.map((r, i) => `
+        <div class="kds-item checkable ${checked.has(i) ? 'checked' : ''}" data-row="${i}"
+             onclick="toggleRow('${o.order_id}', ${i})">
+          <div class="kds-check">✓</div>
+          <div>
+            <div class="kds-item-name">${r.name}</div>
+            ${r.mods ? `<div class="kds-item-mods">${r.mods}</div>` : ''}
+          </div>
+        </div>`).join('')
+        + `<div class="plated-count" data-plated>${rows.filter((_, i) => checked.has(i)).length} OF ${rows.length} PLATED</div>`;
+    } else {
+      itemsHtml = items.map(i => `
+        <div class="kds-item">
+          <div class="kds-item-name">${i.quantity||1}× ${i.name||''}</div>
+          ${i.modifiers && i.modifiers.length ? `<div class="kds-item-mods">${i.modifiers.join(' · ')}</div>` : ''}
+        </div>`).join('');
+    }
+
+    // Item 6: allergy first, then notes. Never truncated, never collapsed.
+    // Nothing rendered at all when the fields are empty.
+    const allergyHtml = o.allergy
+      ? `<div class="kds-alert kds-allergy"><span class="alert-chip">ALLERGY</span>${o.allergy}</div>` : '';
+    const notesHtml = o.special_instructions
+      ? `<div class="kds-alert kds-note">📝 ${o.special_instructions}</div>` : '';
 
     // Chip is updated in place by the shared ticker — never re-rendered per second.
     const chipHtml = opts.showDue
@@ -247,9 +350,14 @@
          </span>`
       : `<span class="due-badge chip-done">✅ ${o.updated_at ? new Date(o.updated_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : ''}</span>`;
 
+    // Item 8: the whole bottom zone is the tap target, not just a small button.
     const actionHtml = opts.showDue
-      ? `<button class="complete-btn" onclick="markCompleted('${o.order_id}')">✅ Completed</button>`
-      : `<button class="undo-btn" onclick="undoCompleted('${o.order_id}')">↩ Move back to In Progress</button>`;
+      ? `<button class="complete-zone" data-complete ${allChecked ? '' : 'disabled'}
+                 onclick="markCompleted('${o.order_id}')">
+           <span class="cz-label" data-cz-label>${allChecked ? '✅ Completed' : 'Finish all items first'}</span>
+           <span class="cz-hint">TAP ANYWHERE IN THIS ZONE</span>
+         </button>`
+      : `<button class="undo-btn" data-undo onclick="undoCompleted('${o.order_id}')">↩ Move back to In Progress</button>`;
 
     return `
       <div class="kds-card ${chip ? 'urgency-' + chip.level : ''}" data-id="${o.order_id}">
@@ -268,11 +376,35 @@
           </div>
         </div>
         <div class="kds-body">
+          ${allergyHtml}
+          ${notesHtml}
           ${itemsHtml}
-          ${o.special_instructions ? `<div class="kds-notes">📝 ${o.special_instructions}</div>` : ''}
         </div>
         <div class="kds-foot">${actionHtml}</div>
       </div>`;
+  }
+
+  // ── Item 7: plated-row checkboxes ────────────────────────────────────────
+  // Optimistic local update, then persisted so it survives refresh and syncs
+  // to any other tablet in the kitchen.
+  async function toggleRow(orderId, idx) {
+    const o = allOrders.find(x => x.order_id === orderId);
+    if (!o) return;
+    const set = checkedRows(o);
+    set.has(idx) ? set.delete(idx) : set.add(idx);
+    const checked = [...set].sort((a, b) => a - b);
+    o.items_checked = checked;
+    o.items_checked_json = JSON.stringify(checked);
+    renderProgress();
+    try {
+      const res = await fetch(`/api/orders/${orderId}/items-checked${DASH_KEY ? '?key='+encodeURIComponent(DASH_KEY):''}`, {
+        method: 'PATCH', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ checked }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+    } catch (e) {
+      console.error('[kds] failed to persist plated rows', e);
+    }
   }
 
   // ══════════════ In Progress ══════════════
@@ -300,11 +432,12 @@
     const now = Date.now();
     const list = progressList(now);
     const grid = document.getElementById('progress-grid');
-    document.getElementById('progress-count').innerHTML = `<strong>${list.length}</strong> in progress`;
+    // Header count/rush state is owned by updateHeader(), driven from tick().
 
     if (!list.length) {
       cardEls.clear();
       grid.innerHTML = `<div class="empty-state"><div class="icon">🍳</div><h3>All caught up — no orders in progress</h3></div>`;
+      updateHeader(now);
       return;
     }
     const emptyEl = grid.querySelector('.empty-state');
@@ -414,8 +547,48 @@
         if (ageEl.textContent !== ageText) ageEl.textContent = ageText;
       }
     }
+    updateHeader(now);
+    updateUndoButtons(now);
     // Re-sort as the clock moves (applyOrder self-gates to the debounce window).
     applyOrder(progressList(now).map(o => o.order_id), false);
+  }
+
+  // ── Item 10: rush mode (ambient only — no sound, toast, or modal) ────────
+  // Hysteresis: rise into rush at RUSH_ON, fall out at RUSH_OFF, so it can't
+  // flicker when the count sits on the boundary.
+  function updateHeader(now) {
+    const list = progressList(now);
+    const late = list.filter(o => DueTime.getChipState(toDueOrder(o), now).level === 'red').length;
+    if (!rushMode && list.length >= RUSH_ON) rushMode = true;
+    else if (rushMode && list.length <= RUSH_OFF) rushMode = false;
+
+    document.querySelector('header').classList.toggle('rush', rushMode);
+    const el = document.getElementById('progress-count');
+    const html = rushMode
+      ? `RUSH · <strong>${list.length}</strong> IN PROGRESS · <strong>${late}</strong> LATE`
+      : `<strong>${list.length}</strong> in progress`;
+    if (el.innerHTML !== html) el.innerHTML = html;
+  }
+
+  // ── Item 9: loud undo window ────────────────────────────────────────────
+  // For UNDO_WINDOW_MS after completion the undo is a full-width amber button
+  // counting down, then it fades to the permanent quiet grey one.
+  function updateUndoButtons(now) {
+    for (const el of document.querySelectorAll('#completed-grid .kds-card')) {
+      const o = allOrders.find(x => x.order_id === el.dataset.id);
+      const btn = el.querySelector('[data-undo]');
+      if (!o || !btn) continue;
+      const done = Date.parse(o.updated_at || o.timestamp);
+      const left = isNaN(done) ? -1 : Math.ceil((done + UNDO_WINDOW_MS - now) / 1000);
+      if (left > 0) {
+        const label = `↩ Undo — ${left}s left`;
+        if (btn.textContent !== label) btn.textContent = label;
+        if (!btn.classList.contains('loud')) btn.classList.add('loud');
+      } else if (btn.classList.contains('loud')) {
+        btn.classList.remove('loud');
+        btn.textContent = '↩ Move back to In Progress';
+      }
+    }
   }
 
   // ══════════════ Completed — most recently completed first ══════════════

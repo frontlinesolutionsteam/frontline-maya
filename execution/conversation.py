@@ -117,6 +117,7 @@ def get_or_create_state(call_sid: str, restaurant_config: dict) -> dict:
             "customer":           {"name": None, "phone": None, "pickup_time": None},
             "upsell_attempted":   False,
             "special_instructions": "",
+            "allergy":            "",
             "call_start":         _restaurant_now(restaurant_config).isoformat(),
             "messages":           [],
             "escalation_reason":  None,
@@ -125,6 +126,44 @@ def get_or_create_state(call_sid: str, restaurant_config: dict) -> dict:
             "language_confirmed": False,  # True after one detection attempt (avoids re-detecting)
         }
     return _call_states[call_sid]
+
+
+# Words that mean "this could hurt me", not "I'd prefer not". Deliberately broad:
+# a false positive costs the kitchen a glance, a false negative can kill someone.
+_ALLERGY_KEYWORDS = (
+    "allerg",        # allergy, allergic, allergies
+    "intoleran",     # intolerant, intolerance
+    "celiac", "coeliac",
+    "epipen", "epi pen",
+    "anaphyla",      # anaphylaxis, anaphylactic
+    "gluten free", "gluten-free",
+    "lactose",
+    "makes me sick", "make me sick",
+    "can't have", "cannot have", "cant have",
+    "i'll die", "ill die",
+)
+
+
+def _mentions_allergy(transcript: str) -> bool:
+    """True if the caller's words suggest a medical food restriction."""
+    if not transcript:
+        return False
+    t = transcript.lower()
+    return any(k in t for k in _ALLERGY_KEYWORDS)
+
+
+def _merge_allergy(state: dict, value: str) -> None:
+    """Append an allergy note without ever dropping one already captured."""
+    value = (value or "").strip()
+    if not value:
+        return
+    existing = (state.get("allergy") or "").strip()
+    if not existing:
+        state["allergy"] = value
+        return
+    if value.lower() in existing.lower():
+        return
+    state["allergy"] = f"{existing}; {value}"
 
 
 def get_state(call_sid: str) -> Optional[dict]:
@@ -265,8 +304,24 @@ STEP 3 — SUBMIT (when customer gives their name)
 • Off-menu item or complaint → give manager number {mgr_spoken} and use action "escalate".
 • Never fabricate prices — use menu prices above.
 
+━━━ ALLERGIES & NOTES — SAFETY CRITICAL ━━━
+• NEVER ask about allergies. But if the customer volunteers ANYTHING about an
+  allergy, intolerance, or a medical/health reason to avoid a food, you MUST put
+  it in the "allergy" field. Triggers include: "allergic", "allergy", "intolerant",
+  "celiac", "can't have", "makes me sick", "I'll die", "EpiPen", "no X or I'll react".
+• Put the SPECIFIC allergen in "allergy", e.g. "PEANUTS", "DAIRY", "SHELLFISH".
+  Keep it short and in caps. If they name several, comma-separate them.
+• A plain preference with no health reason ("no onions", "extra spicy", "sauce on
+  the side") goes in "notes" instead — NOT in "allergy".
+• If you are unsure whether it is an allergy or a preference, treat it as an
+  ALLERGY. Over-reporting is safe; missing one is not.
+• When you capture an allergy, confirm it out loud in your speech:
+  "Got it — no peanuts, I've flagged that for the kitchen."
+• Once set, an allergy is permanent for the call. Repeat it in the "allergy"
+  field on EVERY later turn. Never blank it out, never shorten it away.
+
 ━━━ JSON FORMAT — return ONLY valid JSON, nothing else ━━━
-{{"speech":"...","action":"continue|add_item|readback|submit|escalate_ask|escalate|end","item":{{"name":"","quantity":1,"unit_price":0.00,"line_total":0.00,"modifiers":[],"menu_item_id":""}},"customer_field":"name|null","customer_value":"value|null","detected_language":"es"}}
+{{"speech":"...","action":"continue|add_item|readback|submit|escalate_ask|escalate|end","item":{{"name":"","quantity":1,"unit_price":0.00,"line_total":0.00,"modifiers":[],"menu_item_id":""}},"customer_field":"name|null","customer_value":"value|null","detected_language":"es","allergy":"","notes":""}}
 
 Action reference:
   add_item  → include item object, confirm aloud
@@ -337,6 +392,27 @@ def process_turn(call_sid: str, transcript: str, restaurant_config: dict) -> dic
 
     speech = parsed.get("speech", "")
     action = parsed.get("action", "continue")
+
+    # ── Allergies & notes (safety critical) ───────────────────────────────────
+    # Sticky: once an allergy is captured it is never cleared by a later turn.
+    allergy = (parsed.get("allergy") or "").strip()
+    if allergy:
+        _merge_allergy(state, allergy)
+
+    notes = (parsed.get("notes") or "").strip()
+    if notes and notes.lower() not in (state.get("special_instructions") or "").lower():
+        existing = state.get("special_instructions") or ""
+        state["special_instructions"] = f"{existing}; {notes}".strip("; ") if existing else notes
+
+    # Deterministic safety net: if the caller's own words trip an allergy keyword
+    # but the model didn't populate the field, flag it for a human rather than
+    # letting it disappear. A false alarm costs a glance; a miss can kill someone.
+    if not allergy and _mentions_allergy(transcript):
+        _merge_allergy(state, f"⚠ UNCONFIRMED — caller said: \"{transcript.strip()[:120]}\"")
+        logger.warning(
+            f"[allergy] keyword detected but model returned no allergy field | "
+            f"call_sid={call_sid} | transcript={transcript!r}"
+        )
 
     # ── Apply state mutations ─────────────────────────────────────────────────
 
