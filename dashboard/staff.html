@@ -61,6 +61,7 @@
 
   .card-header { padding:12px 14px 8px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); gap: 8px; }
   .card-customer { font-weight:700; font-size:.95rem; }
+  .card-customer .ticket-no { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-weight:600; color:var(--muted); }
   .card-time { font-size:.76rem; color:var(--muted); margin-top:2px; display:flex; align-items:center; gap:6px; }
 
   .badge { font-size:.68rem; font-weight:700; letter-spacing:.6px; padding:3px 9px; border-radius:20px; text-transform:uppercase; white-space: nowrap; }
@@ -385,6 +386,7 @@
   function isPaid(o) { return (o.payment_status || 'unpaid').startsWith('paid'); }
   function sourceLabel(s) { return {website:'Website', chatbot:'Chatbot', voice:'Voice', phone:'Phone', in_person:'In-Person'}[s] || (s||'Unknown'); }
   function custName(o) { return (o.customer && o.customer.name) || o.customer_name || '—'; }
+  function ticketLabel(o) { const n = Number(o.ticket_number || 0); return n > 0 ? '#' + String(n).padStart(3, '0') : ''; }
   function custPhone(o) { return (o.customer && o.customer.phone) || o.customer_phone || '—'; }
   function custPickup(o) { return (o.customer && o.customer.pickup_time) || o.pickup_time || 'ASAP'; }
 
@@ -416,7 +418,7 @@
       <div class="order-card ${paid ? 'is-paid' : ''}" data-id="${o.order_id}">
         <div class="card-header">
           <div>
-            <div class="card-customer">${custName(o)}</div>
+            <div class="card-customer">${ticketLabel(o) ? `<span class="ticket-no">${ticketLabel(o)}</span> ` : ''}${custName(o)}</div>
             <div class="card-time">${ts} <span class="source-tag source-${o.source||'voice'}">${sourceLabel(o.source)}</span></div>
           </div>
           ${badgeHtml}

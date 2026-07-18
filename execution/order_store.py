@@ -9,7 +9,7 @@ import asyncio
 import logging
 import os
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import aiosqlite
@@ -64,6 +64,7 @@ async def init_db():
                     stripe_checkout_session_id TEXT DEFAULT '',
                     source               TEXT DEFAULT 'voice',
                     kitchen_received_at  TEXT DEFAULT '',
+                    ticket_number        INTEGER DEFAULT 0,
                     updated_at           TEXT
                 );
 
@@ -108,6 +109,7 @@ async def init_db():
                 ("source",                  "TEXT DEFAULT 'voice'"),
                 ("payment_reference_id",    "TEXT DEFAULT ''"),
                 ("kitchen_received_at",     "TEXT DEFAULT ''"),
+                ("ticket_number",           "INTEGER DEFAULT 0"),
             ]:
                 try:
                     await db.execute(f"ALTER TABLE orders ADD COLUMN {col} {col_def}")
@@ -134,17 +136,102 @@ async def init_db():
 
 # ── Order Operations ──────────────────────────────────────────────────────────
 
+def _parse_ts(s: str):
+    """Parse an ISO timestamp (tz-aware or naive) to an aware datetime, or None."""
+    if not s:
+        return None
+    try:
+        dt = datetime.fromisoformat(s)
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+async def _restaurant_tz_hours(db, restaurant_id: str):
+    """Return (tzinfo, hours_dict) for a restaurant, with safe fallbacks."""
+    tzname, hours = "UTC", {}
+    try:
+        rows = await db.execute_fetchall(
+            "SELECT timezone, hours_json FROM menus WHERE restaurant_id = ?", (restaurant_id,)
+        )
+        if rows:
+            tzname = rows[0]["timezone"] or "UTC"
+            hours = json.loads(rows[0]["hours_json"] or "{}")
+    except Exception:
+        pass
+    try:
+        from zoneinfo import ZoneInfo
+        tz = ZoneInfo(tzname)
+    except Exception:
+        try:
+            import pytz
+            tz = pytz.timezone(tzname)
+        except Exception:
+            tz = timezone.utc
+    return tz, hours
+
+
+def _service_date(ts: datetime, tz, hours: dict) -> str:
+    """
+    Which 'service day' an order belongs to, as a local YYYY-MM-DD label.
+    The day rolls over at the restaurant's local open time (per-location, from
+    its hours — never hardcoded): an order before that day's open counts under
+    the previous calendar date. Ticket numbers are sequential within this label
+    and reset when it changes.
+    """
+    local = ts.astimezone(tz)
+    try:
+        open_str = (hours.get(local.strftime("%A").lower()) or {}).get("open")
+        if open_str:
+            oh, om = (int(x) for x in open_str.split(":"))
+            if (local.hour, local.minute) < (oh, om):
+                local = local - timedelta(days=1)
+    except Exception:
+        pass
+    return local.strftime("%Y-%m-%d")
+
+
+async def _next_ticket_number(db, restaurant_id: str, order_ts: str) -> int:
+    """
+    Next human-callable ticket for the service day THIS order belongs to.
+    Sequential from 1, resets each service day. Scoping by the order's own
+    timestamp (not wall-clock) keeps the sequence self-consistent even if an
+    order carries a back-dated timestamp. Cancelled orders still consume a
+    number — a cook who heard 'Order 12' shouldn't see it reused that day.
+    """
+    tz, hours = await _restaurant_tz_hours(db, restaurant_id)
+    ts = _parse_ts(order_ts) or datetime.now(timezone.utc)
+    target = _service_date(ts, tz, hours)
+    rows = await db.execute_fetchall(
+        "SELECT ticket_number, timestamp FROM orders "
+        "WHERE restaurant_id = ? AND ticket_number > 0",
+        (restaurant_id,),
+    )
+    highest = 0
+    for r in rows:
+        rts = _parse_ts(r["timestamp"])
+        if rts and _service_date(rts, tz, hours) == target and r["ticket_number"] > highest:
+            highest = r["ticket_number"]
+    return highest + 1
+
+
 async def save_order(order: dict) -> str:
     await init_db()
     customer = order.get("customer", {})
     async with _get_db() as db:
+        # Assign a daily ticket number on first save. Mutates the order dict so
+        # the same number flows into the dashboard broadcast, not just the DB row.
+        if not order.get("ticket_number"):
+            order["ticket_number"] = await _next_ticket_number(
+                db, order.get("restaurant_id", ""), order.get("timestamp", "")
+            )
         await db.execute("""
             INSERT OR REPLACE INTO orders
             (order_id, restaurant_id, timestamp, customer_name, customer_phone,
              pickup_time, order_type, items_json, subtotal, estimated_prep_minutes,
              special_instructions, status, call_sid, call_duration_seconds, source,
-             payment_method, payment_status, kitchen_received_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             payment_method, payment_status, kitchen_received_at, ticket_number, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             order.get("order_id", ""),
             order.get("restaurant_id", ""),
@@ -166,6 +253,7 @@ async def save_order(order: dict) -> str:
             # Kitchen received the ticket when it was ingested — default to the
             # order timestamp. (Held scheduled orders will set this at surface time.)
             order.get("kitchen_received_at") or order.get("timestamp", datetime.utcnow().isoformat()),
+            int(order.get("ticket_number", 0)),
             datetime.utcnow().isoformat(),
         ))
         await db.commit()

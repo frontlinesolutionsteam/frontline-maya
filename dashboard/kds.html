@@ -56,7 +56,11 @@
 
   .kds-head { padding:16px 20px 12px; border-bottom:2px solid var(--border); }
   .kds-head-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
-  .badge-row { display:flex; gap:8px; flex-wrap:wrap; }
+  .badge-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  /* Ticket number: the loudest thing in the top row — a cook shouts this. */
+  .ticket-chip { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size:21px; font-weight:800; line-height:1; color:var(--text);
+    background:var(--surface2); border:1px solid var(--border); border-radius:9px; padding:6px 11px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 1px 3px rgba(0,0,0,.45); }
   .badge { font-size:.8rem; font-weight:800; letter-spacing:.5px; padding:5px 12px; border-radius:20px; text-transform:uppercase; white-space:nowrap; }
   .badge-paid     { background:rgba(0,208,132,.18); color:var(--green);  border:1px solid rgba(0,208,132,.4); }
   .badge-unpaid   { background:rgba(240,165,0,.18); color:var(--yellow); border:1px solid rgba(240,165,0,.4); }
@@ -175,6 +179,7 @@
     try { return Array.isArray(o.items) ? o.items : JSON.parse(o.items_json || '[]'); } catch(e) { return []; }
   }
   function isPaid(o) { return (o.payment_status || 'unpaid').startsWith('paid'); }
+  function ticketLabel(o) { const n = Number(o.ticket_number || 0); return n > 0 ? '#' + String(n).padStart(3, '0') : ''; }
   function sourceLabel(s) { return {website:'Website', chatbot:'Chatbot', voice:'Voice', phone:'Phone', in_person:'In-Person'}[s] || (s||'Unknown'); }
   function custName(o) { return (o.customer && o.customer.name) || o.customer_name || '—'; }
   function custPickup(o) { return (o.customer && o.customer.pickup_time) || o.pickup_time || 'ASAP'; }
@@ -212,7 +217,6 @@
 
   function buildCard(o, opts) {
     const items = parseItems(o);
-    const paid = isPaid(o);
     const pickup = custPickup(o);
     const urgency = opts.showDue ? dueBadge(o) : null;
 
@@ -235,8 +239,8 @@
         <div class="kds-head">
           <div class="kds-head-top">
             <div class="badge-row">
+              ${ticketLabel(o) ? `<span class="ticket-chip">${ticketLabel(o)}</span>` : ''}
               <span class="badge source-${o.source||'voice'}">${sourceLabel(o.source)}</span>
-              <span class="badge ${paid ? 'badge-paid' : 'badge-unpaid'}">${paid ? '✅ Paid' : 'Unpaid'}</span>
             </div>
             ${dueBadgeHtml}
           </div>
