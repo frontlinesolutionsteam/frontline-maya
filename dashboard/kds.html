@@ -51,8 +51,8 @@
   /* ── Cards ── */
   .kds-card { background:var(--surface); border:2px solid var(--border); border-radius:14px; overflow:hidden; animation:slideIn .25s ease; }
   @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-  .kds-card.urgency-near    { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(240,165,0,.25); }
-  .kds-card.urgency-overdue { border-color: var(--red);    box-shadow: 0 0 0 3px rgba(233,69,96,.35); }
+  .kds-card.urgency-amber { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(240,165,0,.25); }
+  .kds-card.urgency-red   { border-color: var(--red);    box-shadow: 0 0 0 3px rgba(233,69,96,.35); }
 
   .kds-head { padding:16px 20px 12px; border-bottom:2px solid var(--border); }
   .kds-head-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
@@ -70,10 +70,32 @@
   .source-phone   { background:rgba(251,146,60,.18);  color:var(--orange); border:1px solid rgba(251,146,60,.4); }
   .source-in_person { background:rgba(0,208,132,.18); color:var(--green);  border:1px solid rgba(0,208,132,.4); }
 
-  .due-badge { font-size:.95rem; font-weight:800; padding:6px 14px; border-radius:20px; white-space:nowrap; }
-  .due-ok      { background:rgba(136,138,160,.15); color:var(--text); }
-  .due-near    { background:rgba(240,165,0,.2); color:var(--yellow); }
-  .due-overdue { background:rgba(233,69,96,.25); color:#ff8a9a; }
+  /* Live countdown chip. Width is reserved (min-width + tabular digits) so a
+     ticking number never nudges the layout. */
+  .due-badge { font-size:1.05rem; font-weight:800; padding:6px 14px; border-radius:20px; white-space:nowrap;
+    display:inline-flex; align-items:baseline; gap:7px; min-width:132px; justify-content:center;
+    border:2px solid transparent; font-variant-numeric:tabular-nums; }
+  .due-badge .chip-label { font-size:.72rem; letter-spacing:1px; opacity:.85; }
+  .chip-green   { background:rgba(0,208,132,.15);  color:var(--green);  border-color:rgba(0,208,132,.35); }
+  .chip-amber   { background:rgba(240,165,0,.18);  color:var(--yellow); border-color:rgba(240,165,0,.4); }
+  .chip-red     { background:rgba(233,69,96,.22);  color:#ff8a9a;       border-color:rgba(233,69,96,.55);
+                  animation: chipPulse 2s ease-in-out infinite; }
+  .chip-unknown { background:rgba(136,138,160,.15); color:var(--muted); border-color:rgba(136,138,160,.3); }
+  .chip-done    { background:rgba(136,138,160,.15); color:var(--text); }
+  /* Pulse the border only — the number itself must stay rock steady to read. */
+  @keyframes chipPulse {
+    0%,100% { border-color:rgba(233,69,96,.55); }
+    50%     { border-color:rgba(233,69,96,1); }
+  }
+
+  /* Reorder animation (item 4). Cards translate to their new slot over ~200ms. */
+  .kds-card { will-change: transform; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip-red { animation: none; }
+    .kds-card { transition: none !important; }
+    .order-card, .kds-card { animation: none; }
+  }
 
   .kds-customer { font-size:1.35rem; font-weight:800; }
   .kds-meta { display:flex; gap:18px; font-size:1rem; color:var(--muted); margin-top:4px; flex-wrap:wrap; }
@@ -132,7 +154,15 @@
   let allOrders = [];
   let ws = null;
   const DASH_KEY = new URLSearchParams(window.location.search).get('key') || '';
-  const NEAR_DUE_MINUTES = 5;
+
+  // Card registry: order_id -> live DOM element (cards persist across renders)
+  const cardEls = new Map();
+  let lastReorderAt = 0;
+  let lastTouchAt = 0;
+  const REORDER_INTERVAL_MS = 10000; // batch clock-driven reorders
+  const TOUCH_GRACE_MS = 3000;       // never move a card someone just touched
+  const REDUCED_MOTION = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ══════════════ Nav ══════════════
   function switchView(view) {
@@ -178,7 +208,6 @@
   function parseItems(o) {
     try { return Array.isArray(o.items) ? o.items : JSON.parse(o.items_json || '[]'); } catch(e) { return []; }
   }
-  function isPaid(o) { return (o.payment_status || 'unpaid').startsWith('paid'); }
   function ticketLabel(o) { const n = Number(o.ticket_number || 0); return n > 0 ? '#' + String(n).padStart(3, '0') : ''; }
   function sourceLabel(s) { return {website:'Website', chatbot:'Chatbot', voice:'Voice', phone:'Phone', in_person:'In-Person'}[s] || (s||'Unknown'); }
   function custName(o) { return (o.customer && o.customer.name) || o.customer_name || '—'; }
@@ -198,27 +227,12 @@
     };
   }
 
-  // Badge + urgency level for a card, driven entirely by the tested module.
-  // The late side is the module's job (Late m:ss / Late 1h 04m / Late —).
-  // The not-yet-late side stays a simple "Due in Xm" until item 5's countdown.
-  function dueBadge(o) {
-    const d = toDueOrder(o);
-    const now = Date.now();
-    const badge = DueTime.formatDueBadge(d, now);
-    if (badge.level === 'late' || badge.level === 'unknown') {
-      return { level: 'overdue', label: badge.text };
-    }
-    const due = DueTime.computeDueAt(d);
-    if (due == null) return { level: 'ok', label: '' };
-    const diffMin = Math.round((due - now) / 60000);
-    if (diffMin <= NEAR_DUE_MINUTES) return { level: 'near', label: diffMin <= 0 ? 'Due now' : `Due in ${diffMin}m` };
-    return { level: 'ok', label: `Due in ${diffMin}m` };
-  }
-
   function buildCard(o, opts) {
     const items = parseItems(o);
     const pickup = custPickup(o);
-    const urgency = opts.showDue ? dueBadge(o) : null;
+    const now = Date.now();
+    const chip = opts.showDue ? DueTime.getChipState(toDueOrder(o), now) : null;
+    const age = DueTime.ageMinutes(toDueOrder(o), now);
 
     const itemsHtml = items.length ? items.map(i => `
       <div class="kds-item">
@@ -226,28 +240,31 @@
         ${i.modifiers && i.modifiers.length ? `<div class="kds-item-mods">${i.modifiers.join(' · ')}</div>` : ''}
       </div>`).join('') : `<div class="kds-empty-items">No items — full order via callback</div>`;
 
-    const dueBadgeHtml = opts.showDue
-      ? `<span class="due-badge due-${urgency.level}">${urgency.label}</span>`
-      : `<span class="due-badge due-ok">✅ ${o.updated_at ? new Date(o.updated_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : ''}</span>`;
+    // Chip is updated in place by the shared ticker — never re-rendered per second.
+    const chipHtml = opts.showDue
+      ? `<span class="due-badge chip-${chip.level}" data-chip>
+           <span data-chip-text>${chip.text}</span><span class="chip-label" data-chip-label>${chip.label}</span>
+         </span>`
+      : `<span class="due-badge chip-done">✅ ${o.updated_at ? new Date(o.updated_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : ''}</span>`;
 
     const actionHtml = opts.showDue
       ? `<button class="complete-btn" onclick="markCompleted('${o.order_id}')">✅ Completed</button>`
       : `<button class="undo-btn" onclick="undoCompleted('${o.order_id}')">↩ Move back to In Progress</button>`;
 
     return `
-      <div class="kds-card ${urgency ? 'urgency-' + urgency.level : ''}" data-id="${o.order_id}">
+      <div class="kds-card ${chip ? 'urgency-' + chip.level : ''}" data-id="${o.order_id}">
         <div class="kds-head">
           <div class="kds-head-top">
             <div class="badge-row">
               ${ticketLabel(o) ? `<span class="ticket-chip">${ticketLabel(o)}</span>` : ''}
               <span class="badge source-${o.source||'voice'}">${sourceLabel(o.source)}</span>
             </div>
-            ${dueBadgeHtml}
+            ${chipHtml}
           </div>
           <div class="kds-customer">${custName(o)}</div>
           <div class="kds-meta">
             <span>Pickup: <strong>${pickup}</strong></span>
-            <span>Prep: <strong>${o.estimated_prep_minutes || 10} min</strong></span>
+            <span>In kitchen: <strong data-age>${age == null ? '—' : age + ' min'}</strong></span>
           </div>
         </div>
         <div class="kds-body">
@@ -258,25 +275,147 @@
       </div>`;
   }
 
-  // ══════════════ In Progress — paid AND unpaid, sorted by unified due time ══════════════
+  // ══════════════ In Progress ══════════════
+  // Cards are created once and then reconciled — never re-rendered wholesale —
+  // so the per-second ticker can update text in place, reorders can animate,
+  // and a 12-hour shift on a cheap tablet doesn't thrash the DOM.
+
+  /** Visible In-Progress orders, most-urgent (soonest due) first. */
+  function progressList(now) {
+    return allOrders
+      .filter(o =>
+        (o.status || 'confirmed') !== 'picked_up' &&
+        (o.status || '') !== 'cancelled' &&
+        parseItems(o).length > 0 &&
+        // Scheduled orders are held off the kitchen screen until pickup − prep.
+        // Staff view still shows them the whole time.
+        DueTime.getSurfaceState(toDueOrder(o), now) === 'active'
+      )
+      .map(o => ({ o, due: DueTime.computeDueAt(toDueOrder(o)) ?? Infinity }))
+      .sort((a, b) => a.due - b.due)
+      .map(x => x.o);
+  }
+
   function renderProgress() {
     const now = Date.now();
-    const list = allOrders.filter(o =>
-      (o.status || 'confirmed') !== 'picked_up' &&
-      (o.status || '') !== 'cancelled' &&
-      parseItems(o).length > 0 &&
-      // Scheduled orders are held off the kitchen screen until pickup − prep.
-      // Staff view still shows them the whole time.
-      DueTime.getSurfaceState(toDueOrder(o), now) === 'active'
-    );
-    const withDue = list.map(o => ({ o, due: DueTime.computeDueAt(toDueOrder(o)) ?? Infinity }));
-    withDue.sort((a, b) => a.due - b.due);
-
-    document.getElementById('progress-count').innerHTML = `<strong>${list.length}</strong> in progress`;
+    const list = progressList(now);
     const grid = document.getElementById('progress-grid');
-    grid.innerHTML = withDue.length
-      ? withDue.map(({ o }) => buildCard(o, { showDue: true })).join('')
-      : `<div class="empty-state"><div class="icon">🍳</div><h3>All caught up — no orders in progress</h3></div>`;
+    document.getElementById('progress-count').innerHTML = `<strong>${list.length}</strong> in progress`;
+
+    if (!list.length) {
+      cardEls.clear();
+      grid.innerHTML = `<div class="empty-state"><div class="icon">🍳</div><h3>All caught up — no orders in progress</h3></div>`;
+      return;
+    }
+    const emptyEl = grid.querySelector('.empty-state');
+    if (emptyEl) grid.innerHTML = '';
+
+    const wanted = new Set(list.map(o => o.order_id));
+    // Drop cards for orders that left the queue
+    for (const [id, el] of [...cardEls]) {
+      if (!wanted.has(id)) { el.remove(); cardEls.delete(id); }
+    }
+    // Create new cards / refresh content of existing ones
+    let added = false;
+    for (const o of list) {
+      const existing = cardEls.get(o.order_id);
+      const html = buildCard(o, { showDue: true });
+      if (!existing) {
+        const tpl = document.createElement('template');
+        tpl.innerHTML = html.trim();
+        const el = tpl.content.firstElementChild;
+        grid.appendChild(el);
+        cardEls.set(o.order_id, el);
+        added = true;
+      } else {
+        // Content (items, ticket, source) changes only on server events, which is
+        // when this runs — cheap. The per-second chip update is handled by tick().
+        const tpl = document.createElement('template');
+        tpl.innerHTML = html.trim();
+        existing.innerHTML = tpl.content.firstElementChild.innerHTML;
+      }
+    }
+    // A newly-arrived ticket should land in its correct slot immediately rather
+    // than sit at the bottom for up to 10s.
+    applyOrder(list.map(o => o.order_id), added);
+    tick();
+  }
+
+  // ── Debounced reordering (item 4) ────────────────────────────────────────
+  // A card must never move while a cook is reaching for it: reorders are
+  // batched to at most once per REORDER_INTERVAL_MS, and are skipped entirely
+  // within TOUCH_GRACE_MS of anyone touching the grid.
+  function applyOrder(desiredIds, force) {
+    const grid = document.getElementById('progress-grid');
+    const now = Date.now();
+    if (now - lastTouchAt < TOUCH_GRACE_MS) return;
+    if (!force && now - lastReorderAt < REORDER_INTERVAL_MS) return;
+
+    const current = [...grid.children].map(el => el.dataset.id);
+    if (current.length === desiredIds.length && current.every((id, i) => id === desiredIds[i])) {
+      lastReorderAt = now;
+      return;
+    }
+
+    // FLIP: measure, reorder, then animate from the old position to the new one.
+    const first = new Map();
+    for (const el of grid.children) first.set(el.dataset.id, el.getBoundingClientRect());
+
+    for (const id of desiredIds) {
+      const el = cardEls.get(id);
+      if (el) grid.appendChild(el);
+    }
+
+    if (!REDUCED_MOTION) {
+      for (const el of grid.children) {
+        const before = first.get(el.dataset.id);
+        if (!before) continue;
+        const after = el.getBoundingClientRect();
+        const dx = before.left - after.left, dy = before.top - after.top;
+        if (!dx && !dy) continue;
+        el.style.transition = 'none';
+        el.style.transform = `translate(${dx}px, ${dy}px)`;
+        requestAnimationFrame(() => {
+          el.style.transition = 'transform 200ms ease';
+          el.style.transform = '';
+        });
+      }
+    }
+    lastReorderAt = now;
+  }
+
+  // ── Single shared ticker (item 5) ────────────────────────────────────────
+  // One interval drives every card's countdown. Not one timer per card — this
+  // runs for 12 hours straight on cheap hardware.
+  function tick() {
+    const now = Date.now();
+    const byId = new Map(allOrders.map(o => [o.order_id, o]));
+    for (const [id, el] of cardEls) {
+      const o = byId.get(id);
+      if (!o) continue;
+      const d = toDueOrder(o);
+      const chip = DueTime.getChipState(d, now);
+      const chipEl = el.querySelector('[data-chip]');
+      if (chipEl) {
+        const textEl = chipEl.querySelector('[data-chip-text]');
+        const labelEl = chipEl.querySelector('[data-chip-label]');
+        if (textEl && textEl.textContent !== chip.text) textEl.textContent = chip.text;
+        if (labelEl && labelEl.textContent !== chip.label) labelEl.textContent = chip.label;
+        const chipClass = `due-badge chip-${chip.level}`;
+        if (chipEl.className !== chipClass) chipEl.className = chipClass;
+      }
+      const cardClass = `kds-card urgency-${chip.level}`;
+      if (el.className !== cardClass) el.className = cardClass;
+
+      const ageEl = el.querySelector('[data-age]');
+      if (ageEl) {
+        const age = DueTime.ageMinutes(d, now);
+        const ageText = age == null ? '—' : age + ' min';
+        if (ageEl.textContent !== ageText) ageEl.textContent = ageText;
+      }
+    }
+    // Re-sort as the clock moves (applyOrder self-gates to the debounce window).
+    applyOrder(progressList(now).map(o => o.order_id), false);
   }
 
   // ══════════════ Completed — most recently completed first ══════════════
@@ -308,8 +447,14 @@
   }
 
   // ══════════════ Init ══════════════
+  // Any hand on the grid pauses reordering for TOUCH_GRACE_MS.
+  ['pointerdown', 'touchstart'].forEach(evt =>
+    document.getElementById('progress-grid')
+      .addEventListener(evt, () => { lastTouchAt = Date.now(); }, { passive: true })
+  );
+
   connect();
-  setInterval(renderAll, 30000); // keeps "Due in Xm" / sort order fresh as time passes
+  setInterval(tick, 1000); // ONE shared ticker for every card's countdown
 </script>
 </body>
 </html>

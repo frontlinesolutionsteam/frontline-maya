@@ -100,6 +100,60 @@ test("relative pickup strings are not treated as scheduled", () => {
   }
 });
 
+// ── Live countdown chip (item 5) ─────────────────────────────────────────────
+
+const chipOrder = (prep) => ({ orderId: "CH", prepMinutes: prep, pickupTime: "ASAP",
+  orderTimestamp: "2026-07-16T12:00:00-07:00", kitchenReceivedAt: "2026-07-16T12:00:00-07:00" });
+
+test("chip green — more than 3:00 remaining", () => {
+  // prep 15 -> due 12:15; at 12:05 there is 10:00 left
+  assert.deepStrictEqual(DueTime.getChipState(chipOrder(15), ms("2026-07-16T12:05:00-07:00")),
+    { level: "green", text: "10:00", label: "LEFT" });
+});
+
+test("chip amber — at or under 3:00 remaining", () => {
+  // due 12:15; at 12:12:30 there is 2:30 left
+  assert.deepStrictEqual(DueTime.getChipState(chipOrder(15), ms("2026-07-16T12:12:30-07:00")),
+    { level: "amber", text: "2:30", label: "LEFT" });
+});
+
+test("chip green/amber boundary — exactly 3:00 left is amber", () => {
+  assert.strictEqual(DueTime.getChipState(chipOrder(15), ms("2026-07-16T12:12:00-07:00")).level, "amber");
+  assert.strictEqual(DueTime.getChipState(chipOrder(15), ms("2026-07-16T12:11:59-07:00")).level, "green");
+});
+
+test("chip red — past due, counts up", () => {
+  // due 12:15; at 12:19:12 it is 4:12 late
+  assert.deepStrictEqual(DueTime.getChipState(chipOrder(15), ms("2026-07-16T12:19:12-07:00")),
+    { level: "red", text: "4:12", label: "LATE" });
+});
+
+test("chip red past an hour — h/m format", () => {
+  assert.deepStrictEqual(DueTime.getChipState(chipOrder(15), ms("2026-07-16T13:45:00-07:00")),
+    { level: "red", text: "1h 30m", label: "LATE" });
+});
+
+test("chip respects the 999-minute cap", () => {
+  const stale = { orderId: "S", prepMinutes: 10, pickupTime: "ASAP",
+    orderTimestamp: "2026-07-09T18:47:00-07:00", kitchenReceivedAt: "2026-07-09T18:47:00-07:00" };
+  const chip = DueTime.getChipState(stale, ms("2026-07-17T12:00:00-07:00"));
+  assert.deepStrictEqual(chip, { level: "red", text: "—", label: "LATE" });
+});
+
+test("chip with unknown due_at never crashes", () => {
+  const chip = DueTime.getChipState({ orderId: "X", prepMinutes: 10, pickupTime: "ASAP",
+    orderTimestamp: null, kitchenReceivedAt: null }, Date.now());
+  assert.strictEqual(chip.level, "unknown");
+  assert.strictEqual(chip.text, "—");
+});
+
+test("ageMinutes — order age since kitchen received it", () => {
+  const o = chipOrder(15);
+  assert.strictEqual(DueTime.ageMinutes(o, ms("2026-07-16T12:14:00-07:00")), 14);
+  assert.strictEqual(DueTime.ageMinutes(o, ms("2026-07-16T12:00:00-07:00")), 0);
+  assert.strictEqual(DueTime.ageMinutes({ orderTimestamp: null, kitchenReceivedAt: null }, Date.now()), null);
+});
+
 test("surface_at collapses to received for ASAP, pickup-prep for scheduled", () => {
   const asap = { prepMinutes: 10, pickupTime: "ASAP",
     orderTimestamp: "2026-07-16T12:00:00-07:00", kitchenReceivedAt: "2026-07-16T12:00:00-07:00" };

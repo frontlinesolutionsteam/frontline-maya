@@ -125,6 +125,45 @@
     return { level: "late", text: "Late " + Math.floor(lateMin / 60) + "h " + pad2(lateMin % 60) + "m" };
   }
 
+  function mmss(msSpan) {
+    var total = Math.floor(msSpan / 1000);
+    return Math.floor(total / 60) + ":" + pad2(total % 60);
+  }
+
+  /*
+   * Live countdown chip. Returns { level, text, label }:
+   *   green  > 3:00 remaining  -> "8:32 LEFT"
+   *   amber  3:00 .. 0:00      -> "2:14 LEFT"
+   *   red    past due          -> "4:12 LATE" (counts up), "1h 04m LATE" past an hour
+   * The 999-minute cap applies here too: "— LATE" rather than a fake number.
+   */
+  function getChipState(order, now) {
+    var due = computeDueAt(order);
+    if (due == null) {
+      logError("due_at unknown for order " + (order && order.orderId));
+      return { level: "unknown", text: "—", label: "LATE" };
+    }
+    var remaining = due - now;
+    if (remaining > 0) {
+      return { level: remaining > 180000 ? "green" : "amber", text: mmss(remaining), label: "LEFT" };
+    }
+    var lateMs = -remaining;
+    var lateMin = Math.floor(lateMs / 60000);
+    if (lateMin > LATE_CAP_MINUTES) {
+      logError("lateness " + lateMin + "m exceeds cap for order " + (order && order.orderId) + " — rendering '—'");
+      return { level: "red", text: "—", label: "LATE" };
+    }
+    if (lateMin < 60) return { level: "red", text: mmss(lateMs), label: "LATE" };
+    return { level: "red", text: Math.floor(lateMin / 60) + "h " + pad2(lateMin % 60) + "m", label: "LATE" };
+  }
+
+  /* Minutes since the kitchen got the ticket — order age, distinct from the countdown. */
+  function ageMinutes(order, now) {
+    var recv = Date.parse(order.kitchenReceivedAt || order.orderTimestamp);
+    if (isNaN(recv)) return null;
+    return Math.max(0, Math.floor((now - recv) / 60000));
+  }
+
   function logError(msg) {
     if (typeof console !== "undefined" && console.error) console.error("[kds] " + msg);
   }
@@ -137,5 +176,7 @@
     computeSurfaceAt: computeSurfaceAt,
     getSurfaceState: getSurfaceState,
     formatDueBadge: formatDueBadge,
+    getChipState: getChipState,
+    ageMinutes: ageMinutes,
   };
 });
